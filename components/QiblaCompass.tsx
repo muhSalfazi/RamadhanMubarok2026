@@ -50,8 +50,14 @@ export default function QiblaCompass() {
         }
     };
 
+    // iOS specific property
+    interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+        webkitCompassHeading?: number;
+    }
+
     const handleOrientation = (e: DeviceOrientationEvent) => {
-        let compass = e.webkitCompassHeading || Math.abs(e.alpha! - 360);
+        const event = e as DeviceOrientationEventiOS;
+        let compass = event.webkitCompassHeading || Math.abs(event.alpha! - 360);
         setHeading(compass);
     };
 

@@ -37,6 +37,7 @@ export interface HijriDate {
 }
 
 export interface GregorianDate {
+    date: string;
     day: string;
     month: { number: number; en: string };
     year: string;
