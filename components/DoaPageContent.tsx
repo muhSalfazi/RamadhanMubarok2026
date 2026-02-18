@@ -33,9 +33,9 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
     const filtered = useMemo(() => filterDoas(initialDoas, search, selectedGroup), [initialDoas, search, selectedGroup]);
 
     return (
-        <div className="min-h-screen bg-neutral-950 relative overflow-hidden selection:bg-emerald-500/30">
+        <div className="min-h-screen bg-neutral-950 relative selection:bg-emerald-500/30">
             {/* Background elements would be here (reusing from layout/home if global) */}
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-32">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-40">
                 <header className="mb-8">
                     <Link href="/" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-4">
                         <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,13 +81,13 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
                         filtered.map((doa) => (
                             <div key={doa.id} className="glass p-5 md:p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-lg font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">{doa.nama}</h3>
+                                    <h3 className="text-base font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">{doa.nama}</h3>
                                     <span className="text-[10px] uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40">{doa.grup}</span>
                                 </div>
-                                <p className="font-arabic text-2xl text-right text-white leading-loose mb-4" dir="rtl">{doa.ar}</p>
-                                <p className="text-emerald-500/70 italic text-sm mb-2">{doa.tr}</p>
-                                <p className="text-white/80">{doa.idn}</p>
-                                {doa.tentang && <p className="text-white/30 text-xs mt-3 border-t border-white/5 pt-2">{doa.tentang}</p>}
+                                <p className="font-arabic text-lg md:text-xl text-right text-white leading-loose mb-3 break-words" dir="rtl">{doa.ar}</p>
+                                <p className="text-emerald-500/80 italic text-[10px] md:text-xs mb-1 break-words">{doa.tr}</p>
+                                <p className="text-white/70 text-xs leading-relaxed break-words">{doa.idn}</p>
+                                {doa.tentang && <p className="text-white/30 text-[10px] mt-3 border-t border-white/5 pt-2">{doa.tentang}</p>}
                             </div>
                         ))
                     ) : (
@@ -96,6 +96,9 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
                         </div>
                     )}
                 </div>
+
+                {/* Spacer for bottom nav */}
+                <div className="h-32 w-full"></div>
             </div>
         </div>
     );

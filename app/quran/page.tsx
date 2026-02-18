@@ -7,14 +7,14 @@ export default async function QuranPage() {
     const surahs = await getAllSurah();
 
     return (
-        <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30">
+        <main className="min-h-screen relative selection:bg-emerald-500/30">
             <div className="fixed inset-0 z-0">
                 <div className="absolute inset-0 ramadhan-bg" />
                 <div className="absolute inset-0 islamic-pattern mix-blend-overlay opacity-30" />
                 <StarParticles />
             </div>
 
-            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-8 pb-32">
+            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-8 pb-40">
                 <header className="mb-8 text-center anim-fade-up">
                     <Link href="/" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm mb-6 transition-colors">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

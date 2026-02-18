@@ -95,7 +95,7 @@ async function CityContent() {
 
 export default function RootPage() {
   return (
-    <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30">
+    <main className="min-h-screen relative selection:bg-emerald-500/30">
       {/* Background System */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 ramadhan-bg" />
@@ -103,7 +103,7 @@ export default function RootPage() {
         <StarParticles />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-32">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-40">
         <Header citySlug="karawang" />
 
         <Suspense fallback={<div className="text-white text-center py-20">Memuat Jadwal...</div>}>
