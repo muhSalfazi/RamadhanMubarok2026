@@ -32,7 +32,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob:",
       "connect-src 'self' https://api.aladhan.com https://nominatim.openstreetmap.org",
-      "media-src 'self' blob:",
+      "media-src 'self' blob: https://everyayah.com",
       "frame-ancestors 'none'",
     ].join("; "),
   },

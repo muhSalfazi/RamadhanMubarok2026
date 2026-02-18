@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Surah, Ayat } from "@/lib/quranApi";
 import StarParticles from "@/components/StarParticles";
@@ -31,6 +31,19 @@ export default function SurahDetail({ surah, ayahs }: Props) {
             setCurrentAyatIndex(currentAyatIndex - 1);
         }
     };
+
+    // Auto-scroll effect
+    useEffect(() => {
+        if (currentAyatIndex !== null) {
+            const element = document.getElementById(`ayat-${currentAyatIndex}`);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                });
+            }
+        }
+    }, [currentAyatIndex]);
 
     return (
         <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30 pb-32">
