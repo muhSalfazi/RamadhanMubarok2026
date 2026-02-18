@@ -10,6 +10,7 @@ export const INDONESIAN_CITIES: City[] = [
     { name: "Makassar", slug: "makassar", lat: -5.1477, lng: 119.4327, country: "Indonesia", provinsi: "Sulawesi Selatan", kabkota: "Kota Makassar" },
     { name: "Palembang", slug: "palembang", lat: -2.9761, lng: 104.7754, country: "Indonesia", provinsi: "Sumatera Selatan", kabkota: "Kota Palembang" },
     { name: "Tangerang", slug: "tangerang", lat: -6.1781, lng: 106.6297, country: "Indonesia", provinsi: "Banten", kabkota: "Kota Tangerang" },
+    { name: "Tangerang Selatan", slug: "tangerang-selatan", lat: -6.2886, lng: 106.7179, country: "Indonesia", provinsi: "Banten", kabkota: "Kota Tangerang Selatan" },
     { name: "Depok", slug: "depok", lat: -6.4025, lng: 106.7942, country: "Indonesia", provinsi: "Jawa Barat", kabkota: "Kota Depok" },
     { name: "Bekasi", slug: "bekasi", lat: -6.2383, lng: 106.9756, country: "Indonesia", provinsi: "Jawa Barat", kabkota: "Kota Bekasi" },
     { name: "Bogor", slug: "bogor", lat: -6.5971, lng: 106.806, country: "Indonesia", provinsi: "Jawa Barat", kabkota: "Kota Bogor" },

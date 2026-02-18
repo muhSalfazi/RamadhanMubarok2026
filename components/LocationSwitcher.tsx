@@ -39,8 +39,16 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
             const cityName = await reverseGeocode(latitude, longitude);
 
             if (cityName) {
+                // Normalize: remove "Kota" or "Kabupaten" prefix for better matching
+                const cleanName = cityName.replace(/^(Kota|Kabupaten)\s+/i, "").trim().toLowerCase();
+
                 // Cari di database cities.ts jika ada match
-                const match = INDONESIAN_CITIES.find(c => c.name.toLowerCase() === cityName.toLowerCase());
+                // Priority exact match first, then partial
+                const match = INDONESIAN_CITIES.find(c => {
+                    const dbName = c.name.toLowerCase();
+                    return dbName === cleanName || dbName === cityName.toLowerCase() || c.kabkota?.toLowerCase() === cityName.toLowerCase();
+                });
+
                 if (match) {
                     router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}`);
                     return;
