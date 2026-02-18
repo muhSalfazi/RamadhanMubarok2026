@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import AdzanToggle from "./AdzanToggle";
 import LocationSwitcher from "./LocationSwitcher";
 
