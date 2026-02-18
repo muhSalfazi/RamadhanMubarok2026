@@ -1,7 +1,7 @@
 import Link from "next/link";
-import StarParticles from "@/components/StarParticles";
-import { getAllSurah } from "@/lib/quranApi";
-import QuranBrowser from "@/components/QuranBrowser";
+import StarParticles from "../../components/StarParticles";
+import { getAllSurah } from "../../lib/quranApi";
+import QuranBrowser from "../../components/QuranBrowser";
 
 export default async function QuranPage() {
     const surahs = await getAllSurah();
