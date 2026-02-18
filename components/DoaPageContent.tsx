@@ -3,7 +3,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Doa } from "../../lib/doaApi";
+import { Doa } from "../lib/doaApi";
 
 // Helper for fuzzy search or just simple includes
 function filterDoas(doas: Doa[], query: string, group: string): Doa[] {
@@ -13,7 +13,7 @@ function filterDoas(doas: Doa[], query: string, group: string): Doa[] {
             doa.nama.toLowerCase().includes(q) ||
             doa.idn.toLowerCase().includes(q) ||
             doa.tr.toLowerCase().includes(q) ||
-            (Array.isArray(doa.tag) ? doa.tag.some(t => t.toLowerCase().includes(q)) : (typeof doa.tag === 'string' && doa.tag.toLowerCase().includes(q)));
+            (Array.isArray(doa.tag) ? doa.tag.some((t: string) => t.toLowerCase().includes(q)) : (typeof doa.tag === 'string' && doa.tag.toLowerCase().includes(q)));
 
         const matchGroup = !group || doa.grup === group;
         return matchQuery && matchGroup;
