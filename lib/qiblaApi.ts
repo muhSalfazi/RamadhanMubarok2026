@@ -5,7 +5,7 @@ export interface QiblaData {
     direction: number; // Angle from North
 }
 
-const BASE_URL = "http://api.aladhan.com/v1";
+const BASE_URL = "https://api.aladhan.com/v1";
 
 export async function getQiblaDirection(lat: number, lng: number): Promise<QiblaData | null> {
     try {

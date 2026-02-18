@@ -24,21 +24,33 @@ export default function QiblaPage() {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 try {
+                    setLoading(true); // Ensure loading stays true while fetching API
+                    // Update status text if we had one
                     const data = await getQiblaDirection(position.coords.latitude, position.coords.longitude);
                     if (data) {
                         setQiblaData(data);
                     } else {
-                        setError("Gagal mengambil data arah kiblat.");
+                        setError("Gagal mengambil data dari API.");
                     }
                 } catch (err) {
-                    setError("Terjadi kesalahan koneksi.");
+                    setError("Terjadi kesalahan koneksi ke server.");
                 } finally {
                     setLoading(false);
                 }
             },
             (err) => {
-                setError("Gagal mendeteksi lokasi. Pastikan GPS aktif.");
+                console.error("Geolocation Error:", err);
+                let msg = "Gagal mendeteksi lokasi.";
+                if (err.code === 1) msg = "Izin lokasi ditolak. Mohon aktifkan izin lokasi.";
+                if (err.code === 2) msg = "Lokasi tidak tersedia / sinyal GPS lemah.";
+                if (err.code === 3) msg = "Waktu permintaan lokasi habis (Timeout).";
+                setError(msg);
                 setLoading(false);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000, // 10 seconds timeout
+                maximumAge: 0
             }
         );
     };
