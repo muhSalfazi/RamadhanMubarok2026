@@ -31,6 +31,24 @@ export default function QiblaCompass() {
         );
     }, []);
 
+    // iOS specific property
+    interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+        webkitCompassHeading?: number;
+    }
+
+    // iOS/Standard
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+        const event = e as DeviceOrientationEventiOS;
+        let compass = event.webkitCompassHeading || Math.abs(event.alpha! - 360);
+        setHeading(compass);
+    };
+
+    // Android Absolute
+    const handleAbsoluteOrientation = (e: DeviceOrientationEvent) => {
+        let compass = e.alpha ? Math.abs(e.alpha - 360) : 0;
+        setHeading(compass);
+    };
+
     const requestAccess = async () => {
         if (typeof (DeviceOrientationEvent as any).requestPermission === "function") {
             try {
@@ -48,24 +66,6 @@ export default function QiblaCompass() {
             setPermissionGranted(true);
             window.addEventListener("deviceorientation", handleOrientation);
         }
-    };
-
-    // iOS specific property
-    interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
-        webkitCompassHeading?: number;
-    }
-
-    // iOS/Standard
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-        const event = e as DeviceOrientationEventiOS;
-        let compass = event.webkitCompassHeading || Math.abs(event.alpha! - 360);
-        setHeading(compass);
-    };
-
-    // Android Absolute
-    const handleAbsoluteOrientation = (e: DeviceOrientationEvent) => {
-        let compass = e.alpha ? Math.abs(e.alpha - 360) : 0;
-        setHeading(compass);
     };
 
     useEffect(() => {

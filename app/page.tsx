@@ -1,5 +1,102 @@
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import type { Metadata } from "next";
+
+import { getCityBySlug } from "@/lib/cities";
+import { fetchPrayerTimesByCoords } from "@/lib/prayerApi";
+import { getPrayerTimes } from "@/lib/prayer-utils";
+import StarParticles from "@/components/StarParticles";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import Countdown from "@/components/Countdown";
+import PrayerGrid from "@/components/PrayerGrid";
+
+// Loading component inline or import
+export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data
+
+export async function generateMetadata(): Promise<Metadata> {
+  const city = getCityBySlug("karawang");
+  if (!city) return { title: "Ramadhan 2026" };
+
+  return {
+    title: `Jadwal Sholat ${city.name} — Ramadhan 2026`,
+    description: `Jadwal Sholat Ramadhan 1447 H untuk ${city.name} dan sekitarnya.`,
+  };
+}
+
+async function CityContent() {
+  const citySlug = "karawang"; // Default city
+  const city = getCityBySlug(citySlug);
+  if (!city) return null;
+
+  // Default fetch for Karawang
+  const data = await fetchPrayerTimesByCoords(city.lat, city.lng);
+  const prayers = getPrayerTimes(data.timings);
+
+  return (
+    <>
+      <HeroSection
+        cityName={city.name}
+        hijri={data.date.hijri}
+        gregorian={data.date.gregorian}
+        hijriMonthAr={data.date.hijri.month.ar}
+      />
+
+      <div className="mt-8 mb-12 space-y-12">
+        <Countdown prayers={prayers} />
+        <PrayerGrid prayers={prayers} />
+      </div>
+
+      {/* Info Footer */}
+      <div className="grid grid-cols-2 gap-4 pb-12 anim-fade-up delay-4">
+        <div className="glass p-4 flex items-center justify-between">
+          <div>
+            <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Imsak</p>
+            <p className="text-white font-bold text-lg">{data.timings.Imsak.replace(/\s*\(.*\)/, "")}</p>
+          </div>
+          <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </div>
+        </div>
+        <div className="glass p-4 flex items-center justify-between">
+          <div>
+            <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Terbit</p>
+            <p className="text-white font-bold text-lg">{data.timings.Sunrise.replace(/\s*\(.*\)/, "")}</p>
+          </div>
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
 export default function RootPage() {
-  redirect("/karawang");
+  return (
+    <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30">
+      {/* Background System */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 ramadhan-bg" />
+        <div className="absolute inset-0 islamic-pattern mix-blend-overlay opacity-30" />
+        <StarParticles />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-20">
+        <Header citySlug="karawang" />
+
+        <Suspense fallback={<div className="text-white text-center py-20">Memuat Jadwal...</div>}>
+          <CityContent />
+        </Suspense>
+
+        <footer className="mt-12 text-center anim-fade opacity-40 hover:opacity-100 transition-opacity">
+          <p className="font-arabic text-xl mb-2">وَالنَّحْوُ أَوْلَى أَوَّلًا أَنْ يُعْلَمَا ~ إِذِ الْكَلَامُ دُونَهُ لَنْ يُفْهَمَا</p>
+          <p className="text-xs text-white/50">Imrthi -Syekh Syarafuddin Yahya al imrithi</p>
+        </footer>
+      </div>
+    </main >
+  );
 }
