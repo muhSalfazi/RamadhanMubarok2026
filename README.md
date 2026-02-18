@@ -1,6 +1,16 @@
 # Ramadhan 2026 - Digital Experience 🌙
 
-Project website Ramadhan modern dengan fitur lengkap Jadwal Sholat, Al-Quran, dan Countdown, dibuat dengan Next.js 14, Tailwind CSS, dan TypeScript.eknologi web terbaru untuk pengalaman pengguna yang cepat, responsif, dan estetik.
+Project website Ramadhan modern dengan fitur lengkap Jadwal Sholat, Al-Quran, dan Countdown, dibuat dengan teknologi web terbaru untuk pengalaman pengguna yang cepat, responsif, dan estetik.
+
+## Tech Stack
+
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animation**: CSS Animations & Transitions
+- **Deployment**: [Vercel](https://vercel.com/)
+- **Data Source**: 
+    - [Aladhan API](https://aladhan.com/prayer-times-api) (Global Prayer Times)
+    - [Equran.id API](https://equran.id/apidev) (Indonesian Prayer Times & Doa)
 
 ## Fitur Utama 
 

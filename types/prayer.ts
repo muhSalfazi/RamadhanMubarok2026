@@ -4,6 +4,9 @@ export interface City {
     lat: number;
     lng: number;
     country: string;
+    // Equran.id specific fields
+    provinsi?: string;
+    kabkota?: string;
 }
 
 export interface PrayerTime {

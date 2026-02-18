@@ -3,14 +3,38 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getCityBySlug, INDONESIAN_CITIES } from "../../lib/cities";
-import { fetchPrayerTimesByCoords } from "../../lib/prayerApi";
+import { fetchPrayerTimesByCoords, fetchMonthlyPrayerTimesByCoords } from "../../lib/prayerApi";
 import { getPrayerTimes } from "../../lib/prayer-utils";
 import StarParticles from "../../components/StarParticles";
 import Header from "../../components/Header";
 import HeroSection from "../../components/HeroSection";
 import Countdown from "../../components/Countdown";
 import PrayerGrid from "../../components/PrayerGrid";
+import MonthlyPrayerSchedule from "../../components/MonthlyPrayerSchedule";
 import CityLoading from "./loading";
+
+// Loading component inline or import
+export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data
+
+async function MonthlyScheduleWrapper({ lat, lng }: { lat: number, lng: number }) {
+    // Hardcoded to Feb 2026 for Ramadhan context
+    const monthlyData = await fetchMonthlyPrayerTimesByCoords(lat, lng, 2, 2026);
+    // Also fetch March (next month) to show full Ramadhan if it spans across months? 
+    // Ramadhan 2026 starts 19 Feb. So it's ~10 days in Feb and ~20 days in March.
+    // For "1 bulan penuh", ideally we merge them.
+    // Let's do a quick merge for better UX.
+    const marchData = await fetchMonthlyPrayerTimesByCoords(lat, lng, 3, 2026);
+
+    // Combine: filter Feb days from 19th onwards? Or just show Feb and March?
+    // Let's show Feb (from 19th) + March.
+    // User asked "1 bulan penuh ramadhan". 
+    // AladhanData.date.hijri.month.number === 9 (Ramadhan)
+
+    const allData = [...monthlyData, ...marchData];
+    const ramadhanData = allData.filter(d => d.date.hijri.month.number === 9);
+
+    return <MonthlyPrayerSchedule data={ramadhanData.length > 0 ? ramadhanData : monthlyData} />;
+}
 
 interface PageProps {
     params: { city: string };
@@ -87,6 +111,11 @@ async function CityContent({
             <div className="mt-8 mb-12 space-y-12">
                 <Countdown prayers={prayers} />
                 <PrayerGrid prayers={prayers} />
+
+                {/* Monthly Schedule */}
+                <Suspense fallback={<div className="h-64 rounded-2xl glass animate-pulse" />}>
+                    <MonthlyScheduleWrapper lat={city.lat} lng={city.lng} />
+                </Suspense>
             </div>
 
             {/* Info Footer */}
@@ -141,7 +170,10 @@ export default function CityPage({ params, searchParams }: PageProps) {
 
                 <footer className="mt-12 text-center anim-fade opacity-40 hover:opacity-100 transition-opacity">
                     <p className="font-arabic text-xl mb-2">وَالنَّحْوُ أَوْلَى أَوَّلًا أَنْ يُعْلَمَا ~ إِذِ الْكَلَامُ دُونَهُ لَنْ يُفْهَمَا</p>
-                    <p className="text-xs text-white/50">Imrthi -Syekh Syarafuddin Yahya al imrithi</p>
+                    <p className="text-xs text-white/50 mb-4">Imrthi -Syekh Syarafuddin Yahya al imrithi</p>
+                    <p className="text-[10px] text-white/30 uppercase tracking-widest">
+                        Sumber Data: Equran.id (Indonesia) &  Aladhan.com (Global)
+                    </p>
                 </footer>
             </div>
         </main >
