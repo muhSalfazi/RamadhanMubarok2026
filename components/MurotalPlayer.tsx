@@ -17,15 +17,29 @@ export default function MurotalPlayer({ audioUrl, title, qari, onNext, onPrev }:
     const [duration, setDuration] = useState(0);
     const [speed, setSpeed] = useState(1);
 
+    const [error, setError] = useState<string | null>(null);
+
     // Reset state when audioUrl changes
     useEffect(() => {
         setIsPlaying(true);
         setProgress(0);
+        setError(null);
         if (audioRef.current) {
             audioRef.current.src = audioUrl;
-            audioRef.current.play().catch(e => console.log("Auto-play blocked:", e));
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.error("Auto-play blocked or error:", e);
+                    setIsPlaying(false);
+                });
+            }
         }
     }, [audioUrl]);
+
+    const handleError = () => {
+        setError("Gagal memutar audio. Coba lagi atau periksa koneksi.");
+        setIsPlaying(false);
+    };
 
     const togglePlay = () => {
         if (!audioRef.current) return;
@@ -63,6 +77,7 @@ export default function MurotalPlayer({ audioUrl, title, qari, onNext, onPrev }:
             <audio
                 ref={audioRef}
                 src={audioUrl}
+                onError={handleError}
                 onTimeUpdate={handleTimeUpdate}
                 onEnded={onNext}
                 onPause={() => setIsPlaying(false)}
@@ -73,7 +88,11 @@ export default function MurotalPlayer({ audioUrl, title, qari, onNext, onPrev }:
                 {/* Info */}
                 <div className="hidden md:block w-48">
                     <p className="text-white font-bold truncate">{title}</p>
-                    <p className="text-white/40 text-xs truncate">{qari}</p>
+                    {error ? (
+                        <p className="text-red-400 text-xs truncate animate-pulse">{error}</p>
+                    ) : (
+                        <p className="text-white/40 text-xs truncate">{qari}</p>
+                    )}
                 </div>
 
                 {/* Controls */}

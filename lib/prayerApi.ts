@@ -1,4 +1,4 @@
-import { HIJRI_CONFIG } from "./hijriConfig";
+import { HIJRI_CONFIG, getJakartaDate } from "./hijriConfig";
 
 const ALADHAN_BASE = "https://api.aladhan.com/v1";
 
@@ -59,7 +59,7 @@ export async function fetchPrayerTimesByCoords(
     lng: number,
     date?: string
 ): Promise<AladhanData> {
-    const today = date || new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    const today = date || getJakartaDate();
     const url = `${ALADHAN_BASE}/timings/${today}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.method}&school=1&tune=0,0,0,0,0,0,0,0,0`;
 
     const res = await fetch(url, {
@@ -91,7 +91,7 @@ export async function fetchPrayerTimesByCity(
     country: string = "Indonesia",
     date?: string
 ): Promise<AladhanData> {
-    const today = date || new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    const today = date || getJakartaDate();
     const url = `${ALADHAN_BASE}/timingsByCity/${today}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=1`;
 
     const res = await fetch(url, {

@@ -55,17 +55,39 @@ export default function QiblaCompass() {
         webkitCompassHeading?: number;
     }
 
+    // iOS/Standard
     const handleOrientation = (e: DeviceOrientationEvent) => {
         const event = e as DeviceOrientationEventiOS;
         let compass = event.webkitCompassHeading || Math.abs(event.alpha! - 360);
         setHeading(compass);
     };
 
+    // Android Absolute
+    const handleAbsoluteOrientation = (e: DeviceOrientationEvent) => {
+        let compass = e.alpha ? Math.abs(e.alpha - 360) : 0;
+        setHeading(compass);
+    };
+
     useEffect(() => {
+        if (!permissionGranted) return;
+
+        if (typeof window !== "undefined") {
+            if ("ondeviceorientationabsolute" in window) {
+                // @ts-ignore
+                window.addEventListener("deviceorientationabsolute", handleAbsoluteOrientation, true);
+            } else {
+                window.addEventListener("deviceorientation", handleOrientation, true);
+            }
+        }
+
         return () => {
-            window.removeEventListener("deviceorientation", handleOrientation);
+            if (typeof window !== "undefined") {
+                // @ts-ignore
+                window.removeEventListener("deviceorientationabsolute", handleAbsoluteOrientation, true);
+                window.removeEventListener("deviceorientation", handleOrientation, true);
+            }
         };
-    }, []);
+    }, [permissionGranted]);
 
     // Visual Rotation Logic
     // The compass rose (North) rotates opposite to device heading (-heading)
