@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!city) return { title: "Ramadhan 2026" };
 
   return {
-    title: `Jadwal Sholat ${city.name} — Ramadhan 2026`,
+    title: `Ramadhan 2026 - Digital Experience`,
     description: `Jadwal Sholat Ramadhan 1447 H untuk ${city.name} dan sekitarnya.`,
   };
 }

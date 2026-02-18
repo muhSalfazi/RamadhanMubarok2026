@@ -22,12 +22,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!city) return { title: "Kota Tidak Ditemukan" };
 
     return {
-        title: `Ramadhan Mubarok 2026 — ${city.name}`,
+        title: `Ramadhan 2026 - Digital Experience`,
         description: `Jadwal Sholat Ramadhan 1447 H untuk ${city.name} dan sekitarnya. Kalender Hijriah sesuai standar Kemenag RI.`,
         openGraph: {
             type: "website",
             siteName: "Ramadhan 2026 Digital Experience",
-            title: `Ramadhan Mubarok 2026 — ${city.name}`,
+            title: `Ramadhan 2026 - Digital Experience`,
             description: `Informasi waktu sholat, imsakiyah, dan countdown berbuka puasa untuk wilayah ${city.name}.`,
             locale: "id_ID",
             images: [
