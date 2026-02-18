@@ -14,7 +14,7 @@ export default async function QuranPage() {
                 <StarParticles />
             </div>
 
-            <div className="relative z-10 max-w-5xl mx-auto px-4 py-8 md:py-12">
+            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-8 pb-32">
                 <header className="mb-8 text-center anim-fade-up">
                     <Link href="/" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm mb-6 transition-colors">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

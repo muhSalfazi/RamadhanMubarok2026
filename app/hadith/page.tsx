@@ -12,7 +12,7 @@ export default async function HadithPage() {
 
     return (
         <div className="min-h-screen bg-neutral-950 relative overflow-hidden selection:bg-emerald-500/30">
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-10 pb-20">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-10 pb-32">
                 <header className="mb-10">
                     <Link href="/" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-4">
                         <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

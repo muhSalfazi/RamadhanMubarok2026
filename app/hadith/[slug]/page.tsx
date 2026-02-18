@@ -34,7 +34,7 @@ export default async function HadithReadPage({ params, searchParams }: PageProps
 
     return (
         <div className="min-h-screen bg-neutral-950 relative overflow-hidden selection:bg-emerald-500/30">
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-10 pb-20">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-10 pb-32">
                 <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <Link href="/hadith" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-2">

@@ -103,7 +103,7 @@ export default function RootPage() {
         <StarParticles />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-20">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-32">
         <Header citySlug="karawang" />
 
         <Suspense fallback={<div className="text-white text-center py-20">Memuat Jadwal...</div>}>

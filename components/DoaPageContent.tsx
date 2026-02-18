@@ -35,7 +35,7 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
     return (
         <div className="min-h-screen bg-neutral-950 relative overflow-hidden selection:bg-emerald-500/30">
             {/* Background elements would be here (reusing from layout/home if global) */}
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-20">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-32">
                 <header className="mb-8">
                     <Link href="/" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-4">
                         <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,7 +79,7 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
                 <div className="grid gap-4">
                     {filtered.length > 0 ? (
                         filtered.map((doa) => (
-                            <div key={doa.id} className="glass p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group">
+                            <div key={doa.id} className="glass p-5 md:p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group">
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className="text-lg font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">{doa.nama}</h3>
                                     <span className="text-[10px] uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40">{doa.grup}</span>
