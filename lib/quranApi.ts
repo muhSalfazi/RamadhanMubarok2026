@@ -81,9 +81,21 @@ export async function getSurahDetail(number: number): Promise<{ surah: Surah; ay
         });
         if (!res.ok) throw new Error(`Failed to fetch surah ${number}`);
         const data = await res.json();
+        const verses = data.data.verses.map((verse: any) => {
+            const surahStr = String(number).padStart(3, "0");
+            const ayahStr = String(verse.number.inSurah).padStart(3, "0");
+            return {
+                ...verse,
+                audio: {
+                    ...verse.audio,
+                    primary: `https://everyayah.com/data/Alafasy_128kbps/${surahStr}${ayahStr}.mp3`,
+                },
+            };
+        });
+
         return {
             surah: data.data,
-            ayahs: data.data.verses,
+            ayahs: verses,
         };
     } catch (error) {
         console.error(`Error fetching surah ${number}:`, error);
