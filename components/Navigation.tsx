@@ -35,14 +35,7 @@ export default function Navigation() {
                 </svg>
             )
         },
-        {
-            href: "/qibla", label: "Kiblat", icon: (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6l4 8-4-2-4 2 4-8z" />
-                </svg>
-            )
-        },
+
 
     ];
 
