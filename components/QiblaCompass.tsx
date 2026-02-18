@@ -71,20 +71,19 @@ export default function QiblaCompass() {
     useEffect(() => {
         if (!permissionGranted) return;
 
-        if (typeof window !== "undefined") {
-            if ("ondeviceorientationabsolute" in window) {
-                // @ts-ignore
-                window.addEventListener("deviceorientationabsolute", handleAbsoluteOrientation, true);
-            } else {
-                window.addEventListener("deviceorientation", handleOrientation, true);
-            }
+        if ("ondeviceorientationabsolute" in window) {
+            // @ts-ignore
+            window.addEventListener("deviceorientationabsolute", handleAbsoluteOrientation, true);
+        } else {
+            (window as any).addEventListener("deviceorientation", handleOrientation, true);
         }
+
 
         return () => {
             if (typeof window !== "undefined") {
                 // @ts-ignore
                 window.removeEventListener("deviceorientationabsolute", handleAbsoluteOrientation, true);
-                window.removeEventListener("deviceorientation", handleOrientation, true);
+                (window as any).removeEventListener("deviceorientation", handleOrientation, true);
             }
         };
     }, [permissionGranted]);
