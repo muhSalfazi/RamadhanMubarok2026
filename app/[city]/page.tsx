@@ -2,14 +2,14 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { getCityBySlug, INDONESIAN_CITIES } from "@/lib/cities";
-import { fetchPrayerTimesByCoords } from "@/lib/prayerApi";
-import { getPrayerTimes } from "@/lib/prayer-utils";
-import StarParticles from "@/components/StarParticles";
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import Countdown from "@/components/Countdown";
-import PrayerGrid from "@/components/PrayerGrid";
+import { getCityBySlug, INDONESIAN_CITIES } from "../../lib/cities";
+import { fetchPrayerTimesByCoords } from "../../lib/prayerApi";
+import { getPrayerTimes } from "../../lib/prayer-utils";
+import StarParticles from "../../components/StarParticles";
+import Header from "../../components/Header";
+import HeroSection from "../../components/HeroSection";
+import Countdown from "../../components/Countdown";
+import PrayerGrid from "../../components/PrayerGrid";
 import CityLoading from "./loading";
 
 interface PageProps {
@@ -22,12 +22,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!city) return { title: "Kota Tidak Ditemukan" };
 
     return {
-        title: `Jadwal Sholat ${city.name} Ramadhan 2026`,
+        title: `Jadwal Sholat ${city.name} Ramadhan Mubarok 2026`,
         description: `Jadwal Sholat Ramadhan 1447 H untuk ${city.name} dan sekitarnya. Kalender Hijriah sesuai standar Kemenag RI.`,
         openGraph: {
             type: "website",
             siteName: "Ramadhan 2026 Digital Experience",
-            title: `Jadwal Sholat ${city.name} — Ramadhan 1447 H`,
+            title: `Jadwal Sholat ${city.name} — Ramadhan Mubarok 2026`,
             description: `Informasi waktu sholat, imsakiyah, dan countdown berbuka puasa untuk wilayah ${city.name}.`,
             locale: "id_ID",
             images: [

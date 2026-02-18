@@ -1,9 +1,9 @@
-import { HijriDate, GregorianDate } from "@/types/prayer";
-import { formatHijriDateId, formatGregorianDateId, HIJRI_CONFIG } from "@/lib/hijriConfig";
+import { AladhanDate, GregorianDate } from "../types/prayer";
+import { formatHijriDateId, formatGregorianDateId, HIJRI_CONFIG } from "../lib/hijriConfig";
 
 interface HeroSectionProps {
     cityName: string;
-    hijri: HijriDate;
+    hijri: AladhanDate;
     gregorian: GregorianDate;
     hijriMonthAr: string;
 }
@@ -24,7 +24,7 @@ export default function HeroSection({
             <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-6 glass-gold anim-fade-up delay-1">
                 <span className="text-sm" aria-hidden="true">✦</span>
                 <span className="text-sm font-medium text-gold-gradient tracking-wide">
-                    Selamat Menjalankan Ibadah Puasa Ramadhan 1447 H
+                    Selamat Menjalankan Ibadah Puasa Ramadhan Mubarok 2026
                 </span>
                 <span className="text-sm" aria-hidden="true">✦</span>
             </div>

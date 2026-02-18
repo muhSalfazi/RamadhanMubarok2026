@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jadwal-sholat-ramadhan.vercel.app"),
+  metadataBase: new URL("https://ramadhanmubarok2026.vercel.app/"),
   title: {
-    default: "Jadwal Sholat Ramadhan 2026 | Waktu Sholat Indonesia",
-    template: "%s | Jadwal Sholat Ramadhan 2026",
+    default: "Ramadhan Mubarok 2026 | Digital Experience",
+    template: "%s | Ramadhan Mubarok 2026",
   },
   description:
     "Jadwal waktu sholat Ramadhan 1447 H / 2026 untuk seluruh kota di Indonesia. Tampilkan Subuh, Dzuhur, Ashar, Maghrib, dan Isya lengkap dengan tanggal Hijriyah dan countdown real-time.",
