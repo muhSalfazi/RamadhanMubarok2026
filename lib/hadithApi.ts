@@ -60,19 +60,23 @@ export async function getHadith(slug: string, number: number): Promise<HadithDet
         // Based on common MyQuran V2: `data` contains `contents` or direct fields.
         // Let's implement a flexible mapper.
 
+        const validData = json.data || {};
+        const validInfo = json.info || {};
+        const validContents = validData.contents || validData;
+
         return {
-            name: json.data.name || json.data.judul || slug, // Fallback
+            name: validInfo.perawi?.name || validData.name || validData.judul || slug,
             slug: slug,
-            total: json.data.available || 0,
+            total: validInfo.perawi?.total || validData.available || 0,
             pagination: {
                 prev: number > 1 ? number - 1 : null,
-                next: number + 1, // We don't know max unless we check `available`
+                next: number + 1, // We don't know max effectively unless we pass it, but simple next is fine
                 current: number
             },
             contents: {
-                number: parseInt(json.data.contents?.number || json.data.no || number),
-                arab: json.data.contents?.arab || json.data.arab || "",
-                id: json.data.contents?.id || json.data.indo || ""
+                number: parseInt(validContents.number || validContents.no || number),
+                arab: validContents.arab || "",
+                id: validContents.id || validContents.indo || "" // 'id' contains the translation in some endpoints
             }
         };
 
