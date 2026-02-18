@@ -79,15 +79,15 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
                 <div className="grid gap-4">
                     {filtered.length > 0 ? (
                         filtered.map((doa) => (
-                            <div key={doa.id} className="glass p-5 md:p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group">
+                            <div key={doa.id} className="glass p-5 md:p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group w-full overflow-hidden">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-base font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">{doa.nama}</h3>
-                                    <span className="text-[10px] uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40">{doa.grup}</span>
+                                    <h3 className="text-base font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors break-words max-w-[70%]">{doa.nama}</h3>
+                                    <span className="text-[10px] uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-white/40 whitespace-nowrap">{doa.grup}</span>
                                 </div>
-                                <p className="font-arabic text-lg md:text-xl text-right text-white leading-loose mb-3 break-words" dir="rtl">{doa.ar}</p>
-                                <p className="text-emerald-500/80 italic text-[10px] md:text-xs mb-1 break-words">{doa.tr}</p>
-                                <p className="text-white/70 text-xs leading-relaxed break-words">{doa.idn}</p>
-                                {doa.tentang && <p className="text-white/30 text-[10px] mt-3 border-t border-white/5 pt-2">{doa.tentang}</p>}
+                                <p className="font-arabic text-lg md:text-xl text-right text-white leading-loose mb-3 break-words whitespace-pre-wrap max-w-full" dir="rtl">{doa.ar}</p>
+                                <p className="text-emerald-500/80 italic text-[10px] md:text-xs mb-1 break-words whitespace-pre-wrap max-w-full">{doa.tr}</p>
+                                <p className="text-white/70 text-xs leading-relaxed break-words whitespace-pre-wrap max-w-full">{doa.idn}</p>
+                                {doa.tentang && <p className="text-white/30 text-[10px] mt-3 border-t border-white/5 pt-2 break-words max-w-full">{doa.tentang}</p>}
                             </div>
                         ))
                     ) : (
