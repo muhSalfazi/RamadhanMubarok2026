@@ -36,6 +36,8 @@ export interface HijriDate {
     weekday: { en: string; ar: string };
 }
 
+export type AladhanDate = HijriDate;
+
 export interface GregorianDate {
     date: string;
     day: string;

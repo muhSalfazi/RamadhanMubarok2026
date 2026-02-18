@@ -1,14 +1,15 @@
+
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { getCityBySlug } from "@/lib/cities";
-import { fetchPrayerTimesByCoords } from "@/lib/prayerApi";
-import { getPrayerTimes } from "@/lib/prayer-utils";
-import StarParticles from "@/components/StarParticles";
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import Countdown from "@/components/Countdown";
-import PrayerGrid from "@/components/PrayerGrid";
+import { getCityBySlug, INDONESIAN_CITIES, DEFAULT_CITY } from "../lib/cities";
+import { fetchPrayerTimesByCoords } from "../lib/prayerApi";
+import { getPrayerTimes } from "../lib/prayer-utils";
+import StarParticles from "../components/StarParticles";
+import Header from "../components/Header";
+import HeroSection from "../components/HeroSection";
+import Countdown from "../components/Countdown";
+import PrayerGrid from "../components/PrayerGrid";
 
 // Loading component inline or import
 export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data

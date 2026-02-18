@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Surah, Ayat } from "@/lib/quranApi";
-import StarParticles from "@/components/StarParticles";
-import MurotalPlayer from "@/components/MurotalPlayer";
+import { Surah, Ayat } from "../lib/quranApi";
+import StarParticles from "../components/StarParticles";
+import MurotalPlayer from "../components/MurotalPlayer";
 
 interface Props {
     surah: Surah;

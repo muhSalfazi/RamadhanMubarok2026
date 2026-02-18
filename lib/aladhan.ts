@@ -1,4 +1,4 @@
-import { AladhanResponse, PrayerData } from "@/types/prayer";
+import { AladhanResponse, PrayerData } from "../types/prayer";
 
 const ALADHAN_BASE_URL = "https://api.aladhan.com/v1";
 
