@@ -43,3 +43,33 @@ export interface GregorianDate {
     year: string;
     weekday: { en: string };
 }
+
+export interface PrayerData {
+    timings: PrayerTimings;
+    date: {
+        hijri: HijriDate;
+        gregorian: GregorianDate;
+        timestamp: string;
+    };
+    meta: {
+        latitude: number;
+        longitude: number;
+        timezone: string;
+        method: {
+            id: number;
+            name: string;
+        };
+        latitudeAdjustmentMethod: string;
+        midnightMode: string;
+        school: string;
+        offset: {
+            [key: string]: number;
+        };
+    };
+}
+
+export interface AladhanResponse {
+    code: number;
+    status: string;
+    data: PrayerData;
+}
