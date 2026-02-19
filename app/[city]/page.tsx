@@ -163,9 +163,6 @@ export default function CityPage({ params, searchParams }: PageProps) {
                 </Suspense>
 
                 <footer className="mt-12 text-center anim-fade opacity-40 hover:opacity-100 transition-opacity">
-                    <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                        Sumber Data: Aladhan.com (Kemenag RI - Syafi'i)
-                    </p>
                     <p className="font-arabic text-xl mb-2 leading-relaxed">
                         يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِنْ قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ
                     </p>
@@ -176,6 +173,10 @@ export default function CityPage({ params, searchParams }: PageProps) {
 
                     <p className="text-xs text-white/60 mb-4 italic">
                         “Wahai orang-orang yang beriman! Diwajibkan atas kamu berpuasa sebagaimana diwajibkan atas orang-orang sebelum kamu agar kamu bertakwa.”
+                    </p>
+
+                    <p className="text-[10px] text-white/30 uppercase tracking-widest">
+                        Sumber Data Jadwal Sholat & Imsakiyah: Aladhan.com (Kemenag RI - Syafi'i)
                     </p>
                 </footer>
             </div>
