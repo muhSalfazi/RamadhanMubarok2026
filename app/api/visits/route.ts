@@ -1,13 +1,21 @@
-
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
-        // Use counterapi.dev's increment endpoint
-        // This runs on server, so adblockers won't block it
-        const res = await fetch("https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits/up", {
+        const searchParams = request.nextUrl.searchParams;
+        const mode = searchParams.get('mode');
+
+        // Determine target URL based on mode
+        // mode='read' -> just get count without incrementing
+        // default -> increment count
+        const baseUrl = "https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits";
+        // If mode is read, we use the base URL (which returns count). 
+        // If mode is undefined or anything else, we use /up to increment.
+        const targetUrl = mode === 'read' ? `${baseUrl}/` : `${baseUrl}/up`;
+
+        const res = await fetch(targetUrl, {
             cache: 'no-store',
             headers: {
                 // Mimic a browser request to avoid potential bot blocking (though counterapi is public)

@@ -7,14 +7,16 @@ export default function VisitorCounter() {
 
     useEffect(() => {
         // Optimistic initialization: Try to read from local storage, else default to 1
-        // We do this in useEffect to avoid hydration mismatch (server has no localStorage)
         const saved = localStorage.getItem("visit_count");
         const initialCount = saved ? parseInt(saved) : 1;
         setVisits(initialCount);
 
         const fetchVisits = () => {
+            const hasVisited = localStorage.getItem("has_visited");
+            const apiUrl = hasVisited ? "/api/visits?mode=read" : "/api/visits";
+
             // Try internal API first
-            fetch("/api/visits")
+            fetch(apiUrl)
                 .then((res) => {
                     if (!res.ok) throw new Error("API Error");
                     return res.json();
@@ -23,20 +25,27 @@ export default function VisitorCounter() {
                     if (data.count) {
                         setVisits(data.count);
                         localStorage.setItem("visit_count", data.count.toString());
+                        if (!hasVisited) {
+                            localStorage.setItem("has_visited", "true");
+                        }
                     }
                 })
                 .catch(() => {
                     // Silent fail - we already showed optimistic "1" or cached value
                     // Try fallback to direct call if internal API failed (last resort)
-                    fetch("https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits/up")
-                        .then(r => r.json())
-                        .then(d => {
-                            if (d.count) {
-                                setVisits(d.count);
-                                localStorage.setItem("visit_count", d.count.toString());
-                            }
-                        })
-                        .catch(e => console.warn("Visitor counter unreachable"));
+                    // Only try fallback if we haven't visited yet (to increment)
+                    if (!hasVisited) {
+                        fetch("https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits/up")
+                            .then(r => r.json())
+                            .then(d => {
+                                if (d.count) {
+                                    setVisits(d.count);
+                                    localStorage.setItem("visit_count", d.count.toString());
+                                    localStorage.setItem("has_visited", "true");
+                                }
+                            })
+                            .catch(e => console.warn("Visitor counter unreachable"));
+                    }
                 });
         };
 
