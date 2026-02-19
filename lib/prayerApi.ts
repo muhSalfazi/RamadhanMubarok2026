@@ -1,6 +1,6 @@
 import { HIJRI_CONFIG, getJakartaDate } from "./hijriConfig";
 import { INDONESIAN_CITIES, getCityBySlug } from "./cities";
-import { fetchEquranSchedule } from "./equranApi";
+// import { fetchEquranSchedule } from "./equranApi";
 
 const ALADHAN_BASE = "https://api.aladhan.com/v1";
 
@@ -83,7 +83,8 @@ export async function fetchPrayerTimesByCoords(
     const todayRaw = date || getJakartaDate(); // YYYY-MM-DD
     const [y, m, d] = todayRaw.split("-");
 
-    // Check if in Indonesia
+    // Check if in Indonesia - DEPRECATED: User requested Aladhan only
+    /*
     if (isCoordinatesInIndonesia(lat, lng)) {
         // Find nearest city to map to Equran kabkota
         const match = findNearestCity(lat, lng);
@@ -100,17 +101,18 @@ export async function fetchPrayerTimesByCoords(
             }
         }
     }
+    */
 
     // Default: Aladhan
     const today = `${d}-${m}-${y}`; // DD-MM-YYYY required by Aladhan
-    const url = `${ALADHAN_BASE}/timings/${today}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.method}&school=1&adjustment=${HIJRI_CONFIG.dayOffset}&tune=0,0,0,0,0,0,0,0,0`;
+    const url = `${ALADHAN_BASE}/timings/${today}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0&tune=0,0,0,0,0,0,0,0,0`;
 
     const res = await fetch(url, {
         next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
-        const fallbackUrl = `${ALADHAN_BASE}/timings/${today}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.methodFallback}&school=1&adjustment=${HIJRI_CONFIG.dayOffset}`;
+        const fallbackUrl = `${ALADHAN_BASE}/timings/${today}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.methodFallback}&school=0&adjustment=0`;
         const fallbackRes = await fetch(fallbackUrl, {
             next: { revalidate: 3600 },
         });
@@ -137,6 +139,8 @@ export async function fetchPrayerTimesByCity(
     const [y, m, d] = todayRaw.split("-");
 
     // Check if Indonesian city
+    // Check if Indonesian city - DEPRECATED: User requested Aladhan only
+    /*
     const indoCity = getCityBySlug(citySlug);
     if (indoCity && indoCity.country === "Indonesia" && indoCity.provinsi && indoCity.kabkota) {
         try {
@@ -147,9 +151,11 @@ export async function fetchPrayerTimesByCity(
             console.error("Equran fallback to Aladhan:", e);
         }
     }
+    */
+    const indoCity = getCityBySlug(citySlug);
 
     const today = `${d}-${m}-${y}`;
-    const url = `${ALADHAN_BASE}/timingsByCity/${today}?city=${encodeURIComponent(indoCity?.name || citySlug)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=1&adjustment=${HIJRI_CONFIG.dayOffset}`;
+    const url = `${ALADHAN_BASE}/timingsByCity/${today}?city=${encodeURIComponent(indoCity?.name || citySlug)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0`;
 
     const res = await fetch(url, {
         next: { revalidate: 3600 },
@@ -173,6 +179,7 @@ export async function fetchMonthlyPrayerTimesByCoords(
     year: number
 ): Promise<AladhanData[]> {
 
+    /*
     if (isCoordinatesInIndonesia(lat, lng)) {
         const match = findNearestCity(lat, lng);
         if (match && match.city.provinsi && match.city.kabkota) {
@@ -183,8 +190,9 @@ export async function fetchMonthlyPrayerTimesByCoords(
             }
         }
     }
+    */
 
-    const url = `${ALADHAN_BASE}/calendar/${year}/${month}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.method}&school=1&adjustment=${HIJRI_CONFIG.dayOffset}&tune=0,0,0,0,0,0,0,0,0`;
+    const url = `${ALADHAN_BASE}/calendar/${year}/${month}?latitude=${lat}&longitude=${lng}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0&tune=0,0,0,0,0,0,0,0,0`;
 
     const res = await fetch(url, {
         next: { revalidate: 86400 },
@@ -212,6 +220,7 @@ export async function fetchMonthlyPrayerTimesByCity(
     // Note: 'city' arg here might be slug or name. Assuming slug if from app/[city]
     const indoCity = getCityBySlug(city) || INDONESIAN_CITIES.find(c => c.name.toLowerCase() === city.toLowerCase());
 
+    /*
     if (indoCity && indoCity.country === "Indonesia" && indoCity.provinsi && indoCity.kabkota) {
         try {
             return await fetchEquranSchedule(indoCity.provinsi, indoCity.kabkota, month, year);
@@ -219,8 +228,9 @@ export async function fetchMonthlyPrayerTimesByCity(
             console.error("Equran monthly fallback to Aladhan:", e);
         }
     }
+    */
 
-    const url = `${ALADHAN_BASE}/calendarByCity/${year}/${month}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=1&adjustment=${HIJRI_CONFIG.dayOffset}`;
+    const url = `${ALADHAN_BASE}/calendarByCity/${year}/${month}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0`;
 
     const res = await fetch(url, {
         next: { revalidate: 86400 },

@@ -114,7 +114,7 @@ export default function RootPage() {
           <p className="font-arabic text-xl mb-2">وَالنَّحْوُ أَوْلَى أَوَّلًا أَنْ يُعْلَمَا ~ إِذِ الْكَلَامُ دُونَهُ لَنْ يُفْهَمَا</p>
           <p className="text-xs text-white/50 mb-4">Imrthi -Syekh Syarafuddin Yahya al imrithi</p>
           <p className="text-[10px] text-white/30 uppercase tracking-widest">
-            Sumber Data: Equran.id (Indonesia) & Aladhan.com (Global)
+            Sumber Data: Aladhan.com (Kemenag RI - Syafi'i)
           </p>
         </footer>
       </div>

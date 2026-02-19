@@ -9,7 +9,7 @@ Project website Ramadhan modern dengan fitur lengkap Jadwal Sholat, Al-Quran, da
 - **Animation**: CSS Animations & Transitions
 - **Deployment**: [Vercel](https://vercel.com/)
 - **Data Source**: 
-    - [Aladhan API](https://aladhan.com/prayer-times-api) (Jadwal Sholat Global & Arah Kiblat)
+    - [Aladhan API](https://aladhan.com/prayer-times-api) (Jadwal Sholat & Imsakiyah)
     - [Equran.id API](https://equran.id/apidev) (Jadwal Sholat Indonesia & Doa Harian)
     - [Quran.gading.dev](https://api.quran.gading.dev/) (Data Al-Qur'an & Audio)
     - [MyQuran API](https://api.myquran.com/) (Data Hadist Shahih)
