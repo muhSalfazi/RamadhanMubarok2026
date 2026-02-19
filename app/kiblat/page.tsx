@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getUserCoordinates } from "@/lib/locationUtils";
 
 // Custom type for iOS DeviceOrientationEvent
@@ -15,7 +16,7 @@ const KAABA_LAT = 21.422487;
 const KAABA_LNG = 39.826206;
 
 export default function QiblaPage() {
-    const [heading, setHeading] = useState<number>(0); // Initialize with 0 to avoid null checks in render
+    const [heading, setHeading] = useState<number>(0);
 
     const [qibla, setQibla] = useState<number>(0);
     const [error, setError] = useState<string>("");
@@ -92,49 +93,114 @@ export default function QiblaPage() {
                 </svg>
             </Link>
 
-            <h1 className="text-2xl font-bold mb-2">Arah Kiblat Akurat</h1>
-            <p className="text-white/50 text-center mb-8 max-w-xs">
-                {coords ? `Lokasi: ${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}` : "Mendeteksi lokasi..."}
-            </p>
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/80 to-neutral-950/90 z-10" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565552629477-cd040270e4a2?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-overlay" />
+            </div>
 
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
-                {/* Compass Dial */}
-                <div
-                    className="absolute inset-0 w-full h-full border-4 border-white/10 rounded-full shadow-2xl transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${-heading}deg)` }}
-                >
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 text-red-500 font-bold">N</div>
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/50">S</div>
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50">E</div>
-                    <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/50">W</div>
-                </div>
+            <div className="relative z-20 flex flex-col items-center w-full max-w-md">
+                <h1 className="text-3xl font-bold mb-1 text-emerald-100 drop-shadow-md">Arah Kiblat</h1>
+                <p className="text-emerald-200/80 text-sm mb-8 flex items-center gap-2 bg-black/20 px-4 py-1 rounded-full backdrop-blur-sm border border-white/5">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {coords ? `${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}` : "Mendeteksi lokasi..."}
+                </p>
 
-                {/* Qibla Needle */}
-                <div
-                    className="absolute inset-0 flex items-center justify-center transition-transform duration-500"
-                    style={{ transform: `rotate(${needleRotation}deg)` }}
-                >
-                    <div className="relative w-full h-full">
-                        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                            <div className="w-12 h-12 bg-black border-2 border-gold rounded-md shadow-lg mb-2 relative">
-                                <div className="absolute top-2 w-full h-[2px] bg-yellow-400"></div>
+                <div className="relative w-80 h-80 md:w-96 md:h-96 my-4">
+                    {/* Outer Ring / Bezel */}
+                    <div className="absolute inset-0 rounded-full border-[6px] border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.2)] bg-neutral-900/80 backdrop-blur-xl" />
+
+                    {/* Compass Dial (Rotates) */}
+                    <div
+                        className="absolute inset-2 rounded-full border-2 border-white/10 transition-transform duration-300 ease-out"
+                        style={{ transform: `rotate(${-heading}deg)` }}
+                    >
+                        {/* Cardinal Points */}
+                        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-red-500 font-bold text-lg font-serif">N</div>
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white font-bold text-lg font-serif">S</div>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-white font-bold text-lg font-serif">E</div>
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white font-bold text-lg font-serif">W</div>
+
+                        {/* Degree Ticks */}
+                        {[...Array(72)].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`absolute top-0 left-1/2 -translate-x-1/2 w-[2px] origin-bottom ${i % 18 === 0 ? 'h-3 bg-white/50' : i % 2 === 0 ? 'h-2 bg-white/30' : 'h-1 bg-white/10'}`}
+                                style={{ transform: `rotate(${i * 5}deg) translateY(0px)`, height: '100%' }}
+                            >
+                                <div className={`w-full ${i % 18 === 0 ? 'h-4' : i % 2 === 0 ? 'h-2' : 'h-1'} bg-current mt-[2px] mx-auto`}></div>
                             </div>
-                            <div className="w-1 h-32 bg-emerald-500/50 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
+                        ))}
+
+                        {/* Kaaba Direction Indicator on the Dial */}
+                        {/* We rotate this marker relative to the dial so it stays at the qibla angle */}
+                        <div
+                            className="absolute inset-0"
+                            style={{ transform: `rotate(${qibla}deg)` }}
+                        >
+                            <div className="absolute top-8 left-1/2 -translate-x-1/2 -translate-y-full flex flex-col items-center">
+                                <div className="w-8 h-8 relative">
+                                    <Image
+                                        src="/kaaba-icon.png"
+                                        alt="Kaaba"
+                                        width={32}
+                                        height={32}
+                                        className="drop-shadow-[0_0_10px_rgba(234,179,8,0.8)]"
+                                        onError={(e: any) => {
+                                            // Fallback if image missing
+                                            e.currentTarget.style.display = 'none';
+                                            e.currentTarget.parentElement!.innerHTML = '<div class="w-2 h-2 bg-yellow-400 rounded-full shadow-[0_0_10px_yellow]"></div>';
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    {/* Qibla Needle (Static Center, or pointing to Qibla?) */}
+                    {/* In NU Online style, usually there is a specific long needle pointing to the Qibla angle relative to North.
+                        Since we rotate the dial by `-heading`, North is always "Up" if we didn't rotate. 
+                        But we rotate the dial so North matches real North. 
+                        The Qibla angle is fixed on the dial.
+                        We can also add a static "Phone Heading" indicator at the top center.
+                    */}
+
+                    {/* Static Top Indicator (Your Phone's Heading) */}
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[15px] border-b-emerald-500 z-30 drop-shadow-lg" />
+
+                    {/* Center Decoration */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-64 h-64 border border-emerald-500/10 rounded-full animate-pulse" />
+                        <div className="w-48 h-48 border border-emerald-500/20 rounded-full" />
+                    </div>
+
+                    {/* Pivot */}
+                    <div className="absolute top-1/2 left-1/2 w-6 h-6 bg-neutral-800 rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-neutral-600 shadow-lg z-30 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full pb-[1px]" />
+                    </div>
+
+                    {/* The Qibla Pointer Needle (Green) - pointing to Calculate Rotation */}
+                    {/* Alternative: The dial creates the reference. We can highlight the Qibla angle on the dial.
+                        Let's use a long needle that points to the Qibla angle.
+                    */}
+                    <div
+                        className="absolute inset-0 flex items-center justify-center transition-transform duration-500 z-20 mix-blend-screen"
+                        style={{ transform: `rotate(${needleRotation}deg)` }}
+                    >
+                        <div className="w-[4px] h-[45%] bg-gradient-to-t from-transparent via-emerald-500/50 to-emerald-400 rounded-full absolute bottom-1/2 origin-bottom shadow-[0_0_15px_rgba(52,211,153,0.8)]"></div>
                     </div>
                 </div>
 
-                {/* Center Pivot */}
-                <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 border-4 border-neutral-900 z-10" />
-            </div>
-
-            <div className="mt-12 text-center">
-                <p className="text-4xl font-bold font-mono text-emerald-400">
-                    {qibla.toFixed(1)}°
-                </p>
-                <p className="text-sm text-white/50 uppercase tracking-widest mt-2">
-                    Derajat dari Utara
-                </p>
+                <div className="mt-8 text-center bg-black/40 backdrop-blur-md px-8 py-4 rounded-3xl border border-white/5 shadow-2xl">
+                    <p className="text-5xl font-bold font-mono text-white tracking-tighter drop-shadow-lg">
+                        {qibla.toFixed(1)}°
+                    </p>
+                    <p className="text-xs text-emerald-400 uppercase tracking-widest mt-2 font-semibold">
+                        Sudut ke Ka'bah
+                    </p>
+                </div>
             </div>
 
             {/* Button Request Access */}
