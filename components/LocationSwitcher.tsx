@@ -97,7 +97,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
 
             {/* Dropdown Menu */}
             {open && (
-                <div className="absolute top-full mt-2 right-0 w-80 z-50 rounded-2xl overflow-hidden glass-strong shadow-2xl anim-fade-up origin-top-right">
+                <div className="absolute top-full mt-2 right-0 w-80 z-50 rounded-2xl overflow-hidden bg-[#0f172a] border border-white/10 shadow-2xl anim-fade-up origin-top-right">
                     {/* Search Input */}
                     <div className="p-3 border-b border-white/5">
                         <div className="relative group">

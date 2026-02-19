@@ -12,6 +12,7 @@ import HeroSection from "../components/HeroSection";
 import Countdown from "../components/Countdown";
 import PrayerGrid from "../components/PrayerGrid";
 import MonthlyPrayerSchedule from "../components/MonthlyPrayerSchedule";
+import AutoLocation from "../components/AutoLocation";
 
 // Loading component inline or import
 export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data
@@ -118,6 +119,7 @@ export default function RootPage() {
           </p>
         </footer>
       </div>
+      <AutoLocation />
     </main>
   );
 }
