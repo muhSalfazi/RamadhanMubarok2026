@@ -26,7 +26,7 @@ export default function DzikirPagiPetangPage() {
                         Kembali ke Menu
                     </Link>
                     <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Dzikir Pagi & Petang</h1>
-                    <p className="text-white/60">Bacaan Al-Ma'tsurat yang dibaca waku pagi dan sore.</p>
+                    <p className="text-white/60">Bacaan Wirdul Latif yang dibaca waktu pagi dan sore.</p>
                 </header>
 
                 {/* Tabs */}

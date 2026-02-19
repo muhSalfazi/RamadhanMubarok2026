@@ -128,7 +128,43 @@ export async function fetchPrayerTimesByCoords(
 }
 
 /**
+ * MyQuran V3 API Interfaces
+ */
+interface MyQuranV3CitySearchResponse {
+    status: boolean;
+    message: string;
+    data: Array<{
+        id: string; // Hash string in V3
+        lokasi: string;
+    }>;
+}
+
+interface MyQuranV3ScheduleResponse {
+    status: boolean;
+    message: string;
+    data: {
+        id: string;
+        kabko: string;
+        prov: string;
+        jadwal: {
+            [date: string]: { // Key is "YYYY-MM-DD" e.g "2026-02-19"
+                tanggal: string;
+                imsak: string;
+                subuh: string;
+                terbit: string;
+                dhuha: string;
+                dzuhur: string;
+                ashar: string;
+                maghrib: string;
+                isya: string;
+            }
+        }
+    };
+}
+
+/**
  * Fetch jadwal sholat berdasarkan nama kota
+ * Hybrid: Menggunakan Aladhan untuk metadata/hijriah + MyQuran V3 (Kemenag) untuk akurasi waktu sholat Indonesia
  */
 export async function fetchPrayerTimesByCity(
     citySlug: string,
@@ -137,36 +173,79 @@ export async function fetchPrayerTimesByCity(
 ): Promise<AladhanData> {
     const todayRaw = date || getJakartaDate();
     const [y, m, d] = todayRaw.split("-");
+    const today = `${d}-${m}-${y}`; // DD-MM-YYYY required by Aladhan
+    const todayV3 = todayRaw; // YYYY-MM-DD required by MyQuran V3
 
-    // Check if Indonesian city
-    // Check if Indonesian city - DEPRECATED: User requested Aladhan only
-    /*
+    // 1. Fetch Basic Data from Aladhan (for Metadata, Hijri, etc.)
     const indoCity = getCityBySlug(citySlug);
-    if (indoCity && indoCity.country === "Indonesia" && indoCity.provinsi && indoCity.kabkota) {
+    const aladhanUrl = `${ALADHAN_BASE}/timingsByCity/${today}?city=${encodeURIComponent(indoCity?.name || citySlug)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0`;
+
+    // Fetch Aladhan in parallel with MyQuran search if possible, but sequential is easier to manage fallback
+    let aladhanData: AladhanData;
+
+    try {
+        const res = await fetch(aladhanUrl, { next: { revalidate: 3600 } });
+        if (!res.ok) throw new Error(`Aladhan API Error: ${res.status}`);
+        const json = await res.json();
+        aladhanData = json.data as AladhanData;
+    } catch (e) {
+        console.error("Aladhan fetch failed:", e);
+        // If Aladhan fails completely, we can't easily construct the full object without mocking.
+        throw e;
+    }
+
+    // 2. Try to fetch from MyQuran V3 (Kemenag/NU Standard) for Indonesian cities
+    if (country === "Indonesia" || !country) {
         try {
-            const schedule = await fetchEquranSchedule(indoCity.provinsi, indoCity.kabkota, parseInt(m), parseInt(y));
-            const todayData = schedule.find(s => s.date.gregorian.date === `${d}-${m}-${y}`);
-            if (todayData) return todayData;
+            // A. Search City ID (V3)
+            // Gunakan nama kota dari config jika ada, jika tidak gunakan slug (di-replace - dengan spasi)
+            const keyword = indoCity?.name || citySlug.replace(/-/g, " ");
+            const searchUrl = `https://api.myquran.com/v3/sholat/kabkota/cari/${encodeURIComponent(keyword)}`;
+
+            const searchRes = await fetch(searchUrl, { next: { revalidate: 86400 } }); // Cache search longer
+            const searchJson = await searchRes.json() as MyQuranV3CitySearchResponse;
+
+            if (searchJson.status && searchJson.data && searchJson.data.length > 0) {
+                // Prioritize "KOTA" if multiple results, otherwise take first
+                const cityData = searchJson.data.find((c) => c.lokasi.startsWith("KOTA")) || searchJson.data[0];
+                const cityId = cityData.id;
+
+                // B. Fetch Schedule (V3)
+                // V3 format: /sholat/jadwal/{cityId}/{yyyy-mm-dd}
+                const scheduleUrl = `https://api.myquran.com/v3/sholat/jadwal/${cityId}/${todayV3}`;
+                const scheduleRes = await fetch(scheduleUrl, { next: { revalidate: 3600 } });
+                const scheduleJson = await scheduleRes.json(); // Type is dynamic because of date key
+
+                if (scheduleJson.status && scheduleJson.data && scheduleJson.data.jadwal) {
+                    const jadwalData = scheduleJson.data.jadwal;
+
+                    // The key in 'jadwal' is the date string YYYY-MM-DD (todayV3)
+                    // But sometimes it might be just 'jadwal': { ... } if fetching for specific date? 
+                    // Based on documentation: "jadwal": { "2026-02-19": { ... } }
+                    const j = jadwalData[todayV3] || jadwalData; // Handle potential variation
+
+                    if (j && j.subuh) {
+                        // C. Overwrite Aladhan Timings with MyQuran Data
+                        aladhanData.timings.Fajr = j.subuh;
+                        aladhanData.timings.Sunrise = j.terbit;
+                        aladhanData.timings.Dhuhr = j.dzuhur;
+                        aladhanData.timings.Asr = j.ashar;
+                        aladhanData.timings.Maghrib = j.maghrib;
+                        aladhanData.timings.Isha = j.isya;
+                        aladhanData.timings.Imsak = j.imsak;
+                        aladhanData.timings.Sunset = j.maghrib; // Sync Sunset with Maghrib
+
+                        console.log(`[PrayerApi] Used MyQuran V3 data for ${citySlug} (ID: ${cityId})`);
+                    }
+                }
+            }
         } catch (e) {
-            console.error("Equran fallback to Aladhan:", e);
+            console.warn(`[PrayerApi] MyQuran V3 fallback failed for ${citySlug}, using Aladhan default.`, e);
+            // Continue with Aladhan data
         }
     }
-    */
-    const indoCity = getCityBySlug(citySlug);
 
-    const today = `${d}-${m}-${y}`;
-    const url = `${ALADHAN_BASE}/timingsByCity/${today}?city=${encodeURIComponent(indoCity?.name || citySlug)}&country=${encodeURIComponent(country)}&method=${HIJRI_CONFIG.method}&school=0&adjustment=0`;
-
-    const res = await fetch(url, {
-        next: { revalidate: 3600 },
-    });
-
-    if (!res.ok) {
-        throw new Error(`Gagal mengambil data untuk kota ${citySlug} (${res.status})`);
-    }
-
-    const json = await res.json();
-    return json.data as AladhanData;
+    return aladhanData;
 }
 
 /**

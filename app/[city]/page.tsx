@@ -176,7 +176,7 @@ export default function CityPage({ params, searchParams }: PageProps) {
                     </p>
 
                     <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                        Sumber Data Jadwal Sholat & Imsakiyah: Aladhan.com (Kemenag RI - Syafi'i)
+                         Sumber Data Jadwal Sholat & Imsakiyah: MyQuran (Kemenag RI) & Aladhan.com
                     </p>
                 </footer>
             </div>

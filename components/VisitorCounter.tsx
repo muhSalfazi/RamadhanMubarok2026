@@ -13,7 +13,9 @@ export default function VisitorCounter() {
 
         const fetchVisits = () => {
             const hasVisited = localStorage.getItem("has_visited");
-            const apiUrl = hasVisited ? "/api/visits?mode=read" : "/api/visits";
+            const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+            const isIgnored = localStorage.getItem("ignore_visits") === "true";
+            const apiUrl = hasVisited || isLocalhost || isIgnored ? "/api/visits?mode=read" : "/api/visits";
 
             // Try internal API first
             fetch(apiUrl)
