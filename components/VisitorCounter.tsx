@@ -6,17 +6,17 @@ export default function VisitorCounter() {
     const [visits, setVisits] = useState<number>(0);
 
     useEffect(() => {
-        // Try to load from local storage first to avoid "0" flash
-        const savedVisits = localStorage.getItem("visit_count");
-        if (savedVisits) {
-            setVisits(parseInt(savedVisits));
-        }
+        // Optimistic initialization: Try to read from local storage, else default to 1
+        // We do this in useEffect to avoid hydration mismatch (server has no localStorage)
+        const saved = localStorage.getItem("visit_count");
+        const initialCount = saved ? parseInt(saved) : 1;
+        setVisits(initialCount);
 
         const fetchVisits = () => {
-            // Use internal API route to bypass ad-blockers
+            // Try internal API first
             fetch("/api/visits")
                 .then((res) => {
-                    if (!res.ok) throw new Error("Internal API Error");
+                    if (!res.ok) throw new Error("API Error");
                     return res.json();
                 })
                 .then((data) => {
@@ -25,19 +25,23 @@ export default function VisitorCounter() {
                         localStorage.setItem("visit_count", data.count.toString());
                     }
                 })
-                .catch((err) => {
-                    console.error("Failed to fetch visits:", err);
-                    // On error, if we have 0 (initial), try to set to 1 as fallback so it doesn't show "..." forever
-                    setVisits(prev => prev === 0 ? 1 : prev);
+                .catch(() => {
+                    // Silent fail - we already showed optimistic "1" or cached value
+                    // Try fallback to direct call if internal API failed (last resort)
+                    fetch("https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits/up")
+                        .then(r => r.json())
+                        .then(d => {
+                            if (d.count) {
+                                setVisits(d.count);
+                                localStorage.setItem("visit_count", d.count.toString());
+                            }
+                        })
+                        .catch(e => console.warn("Visitor counter unreachable"));
                 });
         };
 
-        // Initial fetch
         fetchVisits();
-
-        // Refresh every 30 seconds to show "live" updates if others visit
-        const interval = setInterval(fetchVisits, 30000);
-
+        const interval = setInterval(fetchVisits, 30000); // Live update
         return () => clearInterval(interval);
     }, []);
 
@@ -47,7 +51,7 @@ export default function VisitorCounter() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span>{visits > 0 ? visits.toLocaleString() : "..."} Visits</span>
+            <span>{visits > 0 ? visits.toLocaleString() : "1"} Visits</span>
         </div>
     );
 }
