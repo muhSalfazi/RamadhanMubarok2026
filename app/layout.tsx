@@ -54,6 +54,7 @@ export const viewport = {
 import Navigation from "../components/Navigation";
 import SignatureFooter from "../components/SignatureFooter";
 import SaweriaButton from "../components/SaweriaButton";
+import InspectorBlocker from "../components/InspectorBlocker";
 
 export default function RootLayout({
   children,
@@ -80,6 +81,7 @@ export default function RootLayout({
           <SignatureFooter />
           <Navigation />
           <SaweriaButton />
+          <InspectorBlocker />
         </ThemeProvider>
       </body>
     </html>

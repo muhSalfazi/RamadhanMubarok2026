@@ -1,7 +1,3 @@
-# Ramadhan 2026 - Digital Experience 🌙
-
-Project website Ramadhan modern dengan fitur lengkap Jadwal Sholat, Al-Quran, dan Countdown, dibuat dengan teknologi web terbaru untuk pengalaman pengguna yang cepat, responsif, dan estetik.
-
 ## Tech Stack
 
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
@@ -16,10 +12,16 @@ Project website Ramadhan modern dengan fitur lengkap Jadwal Sholat, Al-Quran, da
 
 ## Fitur Utama 
 
-- **Jadwal Sholat & Imsakiyah**: Akurat sesuai lokasi (Default: Karawang), menggunakan API Aladhan (Kemenag RI).
+- **Jadwal Sholat & Imsakiyah**: Akurat sesuai lokasi (Default: Karawang), menggunakan API Aladhan (Kemenag RI - Syafi'i)
 - **Al-Qur'an Digital**: Baca Al-Qur'an per surat dengan tampilan nyaman.
 - **Murotal Audio Player**: Dengarkan lantunan ayat suci dari Mishary Rashid Alafasy (sumber: EveryAyah).
 - **Auto Focus Ayat**: Layar otomatis bergulir mengikuti ayat yang sedang diputar.
+
+
+## Dukungan & Donasi
+
+Jika Anda merasa project ini bermanfaat, Anda bisa memberikan dukungan melalui:
+[https://saweria.co/muhSalfazi](https://saweria.co/muhSalfazi)
 
 ---
 *Dibuat dengan ❤️ untuk menyambut Ramadhan 1447 H.*

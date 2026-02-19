@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import VisitorCounter from "./VisitorCounter";
 
 export default function SignatureFooter() {
     return (
@@ -27,7 +28,7 @@ export default function SignatureFooter() {
                     {/* Main Text */}
                     <div className="space-y-1">
                         <p className="text-white/80 text-sm md:text-base font-medium tracking-wide">
-                           Marhaban Ya Ramadhan 1447 H
+                            Marhaban Ya Ramadhan 1447 H
                         </p>
                     </div>
 
@@ -35,14 +36,15 @@ export default function SignatureFooter() {
                     <div className="space-y-3">
                         <div className="h-px w-12 bg-white/10 mx-auto" />
                         <p className="text-emerald-500/60 text-xs italic font-arabic">
-                          Dirancang & dikembangkan oleh muhSalfazi
+                            Dirancang & dikembangkan oleh muhSalfazi
                         </p>
                         <p className="text-white/20 text-[10px] uppercase tracking-[0.2em]">
                             © 2026 RamadhanMubarok
                         </p>
+                        <VisitorCounter />
                     </div>
                 </motion.div>
-            </div>
-        </footer>
+            </div >
+        </footer >
     );
 }
