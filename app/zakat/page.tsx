@@ -75,7 +75,7 @@ export default function ZakatPage() {
                     Kembali
                 </Link>
                 <h1 className="text-3xl font-bold mb-2">Kalkulator Zakat</h1>
-                <p className="text-white/60 text-sm">Hitung kewajiban zakat sesuai standar Kemenag RI.</p>
+                <p className="text-white/60 text-sm">Hitung kewajiban zakat Anda.</p>
             </div>
 
             {/* Tabs */}

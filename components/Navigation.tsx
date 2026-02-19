@@ -72,7 +72,7 @@ export default function Navigation() {
                     let isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
 
                     if (link.href === "/ibadah") {
-                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/kiblat");
+                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/zakat");
                     }
 
                     return (

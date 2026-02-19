@@ -62,33 +62,45 @@ export async function reverseGeocode(
         const addr = data.address || {};
 
         // 1. Ambil kota utama untuk query jadwal sholat (City/Regency)
+        // Prioritaskan City/Regency/County (Kab/Kota) daripada Town
         const city =
             addr.city ||
-            addr.town ||
             addr.municipality ||
             addr.regency ||
             addr.county ||
             addr.state_district ||
+            addr.town ||
             "";
 
 
         const parts = [];
 
         // Level 1: Desa/Kelurahan/Lingkungan
-        const village = addr.village || addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet;
+        const village = addr.village || addr.neighbourhood || addr.residential || addr.hamlet;
         if (village) parts.push(village);
 
-        // Level 2: Kecamatan (biasanya mapped ke district atau county di ID)
-        const district = addr.city_district || addr.district || addr.county;
-        // Hindari duplikasi jika nama kecamatan sama dengan nama desa (jarang, tapi mungkin)
-        if (district && district !== village) {
-            parts.push(district);
+        // Level 2: Kecamatan
+        // Prioritaskan tag administratif, town bisa jadi kecamatan jika main city-nya Kabupaten
+        let kecamatan = addr.city_district || addr.district || addr.suburb || addr.quarter || addr.subdivision;
+
+        // Jika tidak ada tag distrik spesifik, tapi ada 'town' dan town beda dengan main city (misal main city = Kabupaten), anggap town sebagai kecamatan
+        if (!kecamatan && addr.town && city !== addr.town) {
+            kecamatan = addr.town;
+        }
+
+        // Tambahkan Kecamatan jika valid & belum ada
+        if (kecamatan && kecamatan !== village) {
+            const cleanCity = city.replace(/^(Kota|Kabupaten)\s+/i, "");
+            // Pastikan kecamatan bukan duplikat nama kota
+            if (!kecamatan.includes(cleanCity)) {
+                parts.push(kecamatan);
+            }
         }
 
         // Selalu akhiri dengan kota/kabupaten jika ada
         if (city) {
             const cleanCity = city.replace(/^(Kota|Kabupaten)\s+/i, "");
-            // Cek supaya gak double (misal "Karawang, Karawang")
+            // Cek supaya gak double
             if (!parts.some(p => p.includes(cleanCity))) {
                 parts.push(cleanCity);
             }

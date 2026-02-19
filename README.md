@@ -2,7 +2,7 @@
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-3.8-sky) ![License](https://img.shields.io/badge/License-MIT-green)
 
-Aplikasi web modern untuk menemani ibadah Ramadhan Anda dengan desain premium yang **sat-set**, akurat, dan menenangkan.
+Web App Ramadhan 2026 M / 1447 H. Jadwal Sholat & Imsakiyah Auto-Detect Lokasi, Al-Qur'an Digital, Kalkulator Zakat & Dzikir. Modern & Sat-set.
 
 ---
 
@@ -15,9 +15,13 @@ Aplikasi web modern untuk menemani ibadah Ramadhan Anda dengan desain premium ya
 
 ### 🕌 Ibadah Harian
 - **Jadwal Sholat & Imsakiyah**: Menggunakan perhitungan **Kemenag RI** (via MyQuran) & Aladhan.
-- **Al-Qur'an Digital**: Bacaan nyaman dengan font IndoPak/Kemenag.
-- **Murottal Audio**: Lantunan ayat suci per-ayat (Syaikh Mishary Rashid).
-- **Wirdul Latif**: Dzikir Pagi & Petang lengkap dengan fitur *counter* digital.
+- **Al-Qur'an Digital**: Lengkap 30 Juz dengan terjemahan & audio murottal.
+- **💰 Kalkulator Zakat**:
+  *   **Zakat Fitrah**: Hitung otomatis berdasarkan jumlah jiwa & harga beras (Liter/Kg).
+  *   **Zakat Maal**: Cek nishab (85gr Emas) & hitung 2.5% kewajiban dari total harta.
+  *   *Note: Perhitungan sesuai standar BAZNAS & Kemenag RI.*
+-   **📿 Dzikir & Doa Harian**: Bacaan dzikir pagi petang (Wirdul Latif), doa-doa pilihan, dan tahlil.
+-   **📚 Hadits Pilihan**: Kumpulan hadits shahih untuk renungan harian.
 
 ### 🎨 Premium UI/UX
 - **Smooth Animations**: Transisi antar halaman yang halus.
