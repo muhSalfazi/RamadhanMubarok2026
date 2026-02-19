@@ -19,24 +19,47 @@ export default function AutoLocation() {
             // Validate if valid city
             const match = INDONESIAN_CITIES.find(c => c.slug === savedCitySlug);
             if (match) {
+                // Restore detailed info if available
+                const savedName = localStorage.getItem("preferred_name");
+                const savedLat = localStorage.getItem("preferred_lat");
+                const savedLng = localStorage.getItem("preferred_lng");
+
+                // IF we have detailed info, use it and stop.
+                if (savedName && savedLat && savedLng) {
+                    let url = `/${match.slug}`;
+                    const params = new URLSearchParams();
+                    params.set("lat", savedLat);
+                    params.set("lng", savedLng);
+                    params.set("name", savedName);
+
+                    if (params.toString()) {
+                        url += `?${params.toString()}`;
+                    }
+
+                    router.replace(url);
+                    setStatus("done");
+                    return;
+                }
+
+                // IF we only have the city slug (generic) but NO details,
+                // we want to try to upgrade to a detailed location via GPS *if possible*.
+                // So we do NOT return here. We let the code proceed to `detect()`.
+                // However, we should technically redirect to the generic city momentarily 
+                // so the user sees something while we upgrade in background?
+
+                // Redirect to generic first (fast), then let detect() upgrade it.
                 router.replace(`/${match.slug}`);
-                setStatus("done");
-                return;
+                // valid match found, but we proceed to detect to see if we can get better details.
             }
         }
 
-        // 2. If no saved city, try Auto-Detect (only once per session to avoid annoyance)
-        // We keep sessionStorage check ONLY for auto-detect, so we don't spam GPS requests
-        // But saved city should always redirect.
-        const hasAutoRedirected = sessionStorage.getItem("auto_location_redirected");
-        if (hasAutoRedirected) return;
+        // 2. If no saved city, try Auto-Detect
+        // We removed sessionStorage check to ensure it always tries to detect on refresh/first load
+        // if no preference is saved.
 
         async function detect() {
             setStatus("detecting");
             try {
-                // Mark as redirected for auto-detect path
-                sessionStorage.setItem("auto_location_redirected", "true");
-
                 const coords = await getUserCoordinates();
                 const { latitude, longitude } = coords;
 
@@ -52,8 +75,12 @@ export default function AutoLocation() {
                     });
 
                     if (match) {
-                        // Auto-save this detected city as preferred so next time it's instant
+                        // Auto-save this detected city AND details as preferred
                         localStorage.setItem("preferred_city", match.slug);
+                        localStorage.setItem("preferred_name", displayName);
+                        localStorage.setItem("preferred_lat", latitude.toString());
+                        localStorage.setItem("preferred_lng", longitude.toString());
+
                         router.replace(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                         setStatus("done");
                         return;
@@ -63,8 +90,11 @@ export default function AutoLocation() {
                 const nearest = findNearestCity(latitude, longitude);
                 const customName = locationResult?.displayName || nearest.name;
 
-                // Save nearest match
+                // Save nearest match details
                 localStorage.setItem("preferred_city", nearest.slug);
+                localStorage.setItem("preferred_name", customName);
+                localStorage.setItem("preferred_lat", latitude.toString());
+                localStorage.setItem("preferred_lng", longitude.toString());
 
                 router.replace(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
                 setStatus("done");

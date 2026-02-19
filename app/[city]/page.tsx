@@ -133,7 +133,7 @@ async function CityContent({
 
                 {/* Monthly Schedule */}
                 <Suspense fallback={<div className="h-64 rounded-2xl glass animate-pulse" />}>
-                    <MonthlyScheduleWrapper lat={city.lat} lng={city.lng} />
+                    <MonthlyScheduleWrapper lat={lat} lng={lng} />
                 </Suspense>
             </div>
         </>
@@ -176,7 +176,7 @@ export default function CityPage({ params, searchParams }: PageProps) {
                     </p>
 
                     <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                         Sumber Data Jadwal Sholat & Imsakiyah: MyQuran (Kemenag RI) & Aladhan.com
+                        Sumber Data Jadwal Sholat & Imsakiyah: MyQuran (Kemenag RI) & Aladhan.com
                     </p>
                 </footer>
             </div>

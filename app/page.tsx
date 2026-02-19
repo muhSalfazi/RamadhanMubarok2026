@@ -124,7 +124,7 @@ export default function RootPage() {
             “Wahai orang-orang yang beriman! Diwajibkan atas kamu berpuasa sebagaimana diwajibkan atas orang-orang sebelum kamu agar kamu bertakwa.”
           </p>
           <p className="text-[10px] text-white/30 uppercase tracking-widest">
-            Sumber Data Jadwal Sholat & Imsakiyah: Aladhan.com (Kemenag RI - Syafi'i)
+            Sumber Data Jadwal Sholat & Imsakiyah: MyQuran (Kemenag RI) & Aladhan.com
           </p>
         </footer>
       </div>

@@ -25,11 +25,20 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
     function handleSelect(city: City) {
         setOpen(false);
         setSearch("");
+        // Save base preference
         localStorage.setItem("preferred_city", city.slug);
+
+        // Clear detailed GPS preferences because user selected a generic city
+        localStorage.removeItem("preferred_name");
+        localStorage.removeItem("preferred_lat");
+        localStorage.removeItem("preferred_lng");
+
         router.push(`/${city.slug}`);
     }
 
     async function detectLocation() {
+        setOpen(false); // Close immediately as requested
+        setSearch("");
         setLoading(true);
         setGeoError("");
         try {
@@ -41,12 +50,8 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
 
             if (locationResult) {
                 const { city: cityName, displayName } = locationResult;
-
-                // Normalize: remove "Kota" or "Kabupaten" prefix for better matching
                 const cleanName = cityName.replace(/^(Kota|Kabupaten)\s+/i, "").trim().toLowerCase();
 
-                // Cari di database cities.ts jika ada match
-                // Priority exact match first, then partial
                 const match = INDONESIAN_CITIES.find(c => {
                     const dbName = c.name.toLowerCase();
                     return dbName === cleanName || dbName === cityName.toLowerCase() || c.kabkota?.toLowerCase() === cityName.toLowerCase();
@@ -54,21 +59,26 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
 
                 if (match) {
                     localStorage.setItem("preferred_city", match.slug);
+                    localStorage.setItem("preferred_name", displayName);
+                    localStorage.setItem("preferred_lat", latitude.toString());
+                    localStorage.setItem("preferred_lng", longitude.toString());
                     router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                     return;
                 }
             }
 
-            // Fallback ke nearest city calculation
             const nearest = findNearestCity(latitude, longitude);
-            // Jika ada displayName dari reverse geocode tapi tidak match database, tetap pakai displayName tersebut
-            // tapi base city-nya pakai yang nearest untuk jadwal sholat
             const customName = locationResult?.displayName || nearest.name;
             localStorage.setItem("preferred_city", nearest.slug);
+            localStorage.setItem("preferred_name", customName);
+            localStorage.setItem("preferred_lat", latitude.toString());
+            localStorage.setItem("preferred_lng", longitude.toString());
             router.push(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
 
         } catch (err: any) {
-            setGeoError(err.message || "Gagal mendapatkan lokasi");
+            console.error(err);
+            // Since menu is closed, we alert the error or just fail silently
+            // alert("Gagal mendapatkan lokasi: " + (err.message || "Unknown error"));
         } finally {
             setLoading(false);
         }

@@ -71,19 +71,27 @@ export async function reverseGeocode(
             addr.state_district ||
             "";
 
-        // 2. Susun nama detail untuk display UI
-        // Prioritas: Village/Suburb > District > City
-        const parts = [];
-        if (addr.village) parts.push(addr.village);
-        else if (addr.suburb) parts.push(addr.suburb);
-        else if (addr.hamlet) parts.push(addr.hamlet);
 
-        if (addr.city_district) parts.push(addr.city_district);
-        else if (addr.district) parts.push(addr.district);
+        const parts = [];
+
+        // Level 1: Desa/Kelurahan/Lingkungan
+        const village = addr.village || addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet;
+        if (village) parts.push(village);
+
+        // Level 2: Kecamatan (biasanya mapped ke district atau county di ID)
+        const district = addr.city_district || addr.district || addr.county;
+        // Hindari duplikasi jika nama kecamatan sama dengan nama desa (jarang, tapi mungkin)
+        if (district && district !== village) {
+            parts.push(district);
+        }
 
         // Selalu akhiri dengan kota/kabupaten jika ada
-        if (city && !parts.join("").includes(city)) {
-            parts.push(city.replace(/^(Kota|Kabupaten)\s+/i, ""));
+        if (city) {
+            const cleanCity = city.replace(/^(Kota|Kabupaten)\s+/i, "");
+            // Cek supaya gak double (misal "Karawang, Karawang")
+            if (!parts.some(p => p.includes(cleanCity))) {
+                parts.push(cleanCity);
+            }
         }
 
         const displayName = parts.length > 0 ? parts.join(", ") : city;
