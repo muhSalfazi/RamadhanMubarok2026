@@ -73,7 +73,7 @@ export default function MurotalPlayer({ audioUrl, title, qari, onNext, onPrev }:
     };
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur-xl border-t border-white/10 p-4 anim-slide-up">
+        <div className="fixed bottom-[62px] md:bottom-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur-xl border-t border-white/10 p-4 anim-slide-up">
             <audio
                 ref={audioRef}
                 src={audioUrl}
