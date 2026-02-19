@@ -21,13 +21,15 @@ export default function HeroSection({
     return (
         <section className="text-center py-8 md:py-12 anim-fade-up relative z-10">
             {/* Ramadhan badge */}
-            <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-6 glass-gold anim-fade-up delay-1">
-                <span className="text-sm" aria-hidden="true">✦</span>
-                <span className="text-sm font-medium text-gold-gradient tracking-wide">
-                    Selamat Menjalankan Ibadah Puasa Ramadhan Mubarok 1447 H
-                </span>
-                <span className="text-sm" aria-hidden="true">✦</span>
-            </div>
+            {isRamadhan && (
+                <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-6 glass-gold anim-fade-up delay-1">
+                    <span className="text-sm" aria-hidden="true">✦</span>
+                    <span className="text-sm font-medium text-gold-gradient tracking-wide">
+                        Selamat Menjalankan Ibadah Puasa Ramadhan Mubarok 1447 H
+                    </span>
+                    <span className="text-sm" aria-hidden="true">✦</span>
+                </div>
+            )}
 
             {/* City name */}
             <div className="anim-fade-up delay-2">

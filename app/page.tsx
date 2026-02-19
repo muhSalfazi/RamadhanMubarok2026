@@ -13,6 +13,7 @@ import Countdown from "../components/Countdown";
 import PrayerGrid from "../components/PrayerGrid";
 import MonthlyPrayerSchedule from "../components/MonthlyPrayerSchedule";
 import AutoLocation from "../components/AutoLocation";
+import EidGreeting from "../components/EidGreeting";
 
 // Loading component inline or import
 export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data
@@ -45,6 +46,22 @@ async function CityContent() {
   // Default fetch for Karawang
   const data = await fetchPrayerTimesByCoords(city.lat, city.lng);
   const prayers = getPrayerTimes(data.timings);
+
+  const isSyawalOrLater = data.date.hijri.month.number > 9;
+
+  if (isSyawalOrLater) {
+    return (
+      <div className="mt-8 space-y-8">
+        <HeroSection
+          cityName={city.name}
+          hijri={data.date.hijri}
+          gregorian={data.date.gregorian}
+          hijriMonthAr={data.date.hijri.month.ar}
+        />
+        <EidGreeting />
+      </div>
+    );
+  }
 
   return (
     <>

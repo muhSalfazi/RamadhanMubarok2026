@@ -11,6 +11,7 @@ import HeroSection from "../../components/HeroSection";
 import Countdown from "../../components/Countdown";
 import PrayerGrid from "../../components/PrayerGrid";
 import MonthlyPrayerSchedule from "../../components/MonthlyPrayerSchedule";
+import EidGreeting from "../../components/EidGreeting";
 import CityLoading from "./loading";
 
 // Loading component inline or import
@@ -91,6 +92,22 @@ async function CityContent({
     // Fetch API with Kemenag method (ISR 1 hour)
     const data = await fetchPrayerTimesByCoords(lat, lng);
     const prayers = getPrayerTimes(data.timings);
+
+    const isSyawalOrLater = data.date.hijri.month.number > 9;
+
+    if (isSyawalOrLater) {
+        return (
+            <div className="mt-8 space-y-8">
+                <HeroSection
+                    cityName={customName ? decodeURIComponent(customName) : city.name}
+                    hijri={data.date.hijri}
+                    gregorian={data.date.gregorian}
+                    hijriMonthAr={data.date.hijri.month.ar}
+                />
+                <EidGreeting />
+            </div>
+        );
+    }
 
     return (
         <>
