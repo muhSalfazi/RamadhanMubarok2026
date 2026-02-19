@@ -23,9 +23,11 @@ export default function AutoLocation() {
                 const savedName = localStorage.getItem("preferred_name");
                 const savedLat = localStorage.getItem("preferred_lat");
                 const savedLng = localStorage.getItem("preferred_lng");
+                const locVer = localStorage.getItem("loc_ver");
 
-                // IF we have detailed info, use it and stop.
-                if (savedName && savedLat && savedLng) {
+                // IF we have detailed info AND it's the new version, use it.
+                // Otherwise force re-detect to fix name format.
+                if (savedName && savedLat && savedLng && locVer === "2") {
                     let url = `/${match.slug}`;
                     const params = new URLSearchParams();
                     params.set("lat", savedLat);
@@ -80,6 +82,7 @@ export default function AutoLocation() {
                         localStorage.setItem("preferred_name", displayName);
                         localStorage.setItem("preferred_lat", latitude.toString());
                         localStorage.setItem("preferred_lng", longitude.toString());
+                        localStorage.setItem("loc_ver", "2");
 
                         router.replace(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                         setStatus("done");
@@ -95,6 +98,7 @@ export default function AutoLocation() {
                 localStorage.setItem("preferred_name", customName);
                 localStorage.setItem("preferred_lat", latitude.toString());
                 localStorage.setItem("preferred_lng", longitude.toString());
+                localStorage.setItem("loc_ver", "2");
 
                 router.replace(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
                 setStatus("done");
