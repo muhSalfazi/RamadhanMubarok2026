@@ -38,7 +38,7 @@ async function MonthlyScheduleWrapper({ lat, lng }: { lat: number, lng: number }
 
 interface PageProps {
     params: { city: string };
-    searchParams: { lat?: string; lng?: string };
+    searchParams: { lat?: string; lng?: string; name?: string };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -83,10 +83,12 @@ async function CityContent({
     citySlug,
     latStr,
     lngStr,
+    customName,
 }: {
     citySlug: string;
     latStr?: string;
     lngStr?: string;
+    customName?: string;
 }) {
     const city = getCityBySlug(citySlug);
     if (!city) notFound();
@@ -102,7 +104,7 @@ async function CityContent({
     return (
         <>
             <HeroSection
-                cityName={city.name}
+                cityName={customName ? decodeURIComponent(customName) : city.name}
                 hijri={data.date.hijri}
                 gregorian={data.date.gregorian}
                 hijriMonthAr={data.date.hijri.month.ar}
@@ -165,6 +167,7 @@ export default function CityPage({ params, searchParams }: PageProps) {
                         citySlug={params.city}
                         latStr={searchParams.lat}
                         lngStr={searchParams.lng}
+                        customName={searchParams.name}
                     />
                 </Suspense>
 

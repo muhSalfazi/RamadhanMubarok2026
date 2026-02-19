@@ -118,6 +118,6 @@ export default function RootPage() {
           </p>
         </footer>
       </div>
-    </main >
+    </main>
   );
 }

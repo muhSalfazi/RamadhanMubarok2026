@@ -38,10 +38,16 @@ export function findNearestCity(lat: number, lng: number): City {
  * Reverse geocoding menggunakan Nominatim OpenStreetMap (gratis, tanpa API key)
  * Hanya dijalankan di client side
  */
+// Tipe hasil geocoding yang lebih detail
+export interface LocationResult {
+    displayName: string; // Nama detail: Duren, Karawang
+    city: string;        // Nama kota untuk jadwal sholat: Karawang
+}
+
 export async function reverseGeocode(
     lat: number,
     lng: number
-): Promise<string | null> {
+): Promise<LocationResult | null> {
     try {
         const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`,
@@ -53,14 +59,39 @@ export async function reverseGeocode(
         );
         if (!res.ok) return null;
         const data = await res.json();
-        // Ambil nama kota/kabupaten dari response
+        const addr = data.address || {};
+
+        // 1. Ambil kota utama untuk query jadwal sholat (City/Regency)
         const city =
-            data.address?.city ||
-            data.address?.town ||
-            data.address?.county ||
-            data.address?.state_district ||
-            null;
-        return city;
+            addr.city ||
+            addr.town ||
+            addr.municipality ||
+            addr.regency ||
+            addr.county ||
+            addr.state_district ||
+            "";
+
+        // 2. Susun nama detail untuk display UI
+        // Prioritas: Village/Suburb > District > City
+        const parts = [];
+        if (addr.village) parts.push(addr.village);
+        else if (addr.suburb) parts.push(addr.suburb);
+        else if (addr.hamlet) parts.push(addr.hamlet);
+
+        if (addr.city_district) parts.push(addr.city_district);
+        else if (addr.district) parts.push(addr.district);
+
+        // Selalu akhiri dengan kota/kabupaten jika ada
+        if (city && !parts.join("").includes(city)) {
+            parts.push(city.replace(/^(Kota|Kabupaten)\s+/i, ""));
+        }
+
+        const displayName = parts.length > 0 ? parts.join(", ") : city;
+
+        return {
+            displayName,
+            city
+        };
     } catch {
         return null;
     }

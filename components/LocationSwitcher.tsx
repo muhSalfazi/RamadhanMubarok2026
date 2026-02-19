@@ -36,9 +36,11 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
             const { latitude, longitude } = coords;
 
             // Coba reverse geocoding untuk nama kota yang lebih akurat
-            const cityName = await reverseGeocode(latitude, longitude);
+            const locationResult = await reverseGeocode(latitude, longitude);
 
-            if (cityName) {
+            if (locationResult) {
+                const { city: cityName, displayName } = locationResult;
+
                 // Normalize: remove "Kota" or "Kabupaten" prefix for better matching
                 const cleanName = cityName.replace(/^(Kota|Kabupaten)\s+/i, "").trim().toLowerCase();
 
@@ -50,14 +52,17 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
                 });
 
                 if (match) {
-                    router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}`);
+                    router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                     return;
                 }
             }
 
             // Fallback ke nearest city calculation
             const nearest = findNearestCity(latitude, longitude);
-            router.push(`/${nearest.slug}?lat=${latitude}&lng=${longitude}`);
+            // Jika ada displayName dari reverse geocode tapi tidak match database, tetap pakai displayName tersebut
+            // tapi base city-nya pakai yang nearest untuk jadwal sholat
+            const customName = locationResult?.displayName || nearest.name;
+            router.push(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
 
         } catch (err: any) {
             setGeoError(err.message || "Gagal mendapatkan lokasi");
