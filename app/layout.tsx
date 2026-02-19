@@ -53,6 +53,7 @@ export const viewport = {
 
 import Navigation from "../components/Navigation";
 import SignatureFooter from "../components/SignatureFooter";
+import SaweriaButton from "../components/SaweriaButton";
 import InspectorBlocker from "../components/InspectorBlocker";
 import { AdzanProvider } from "../components/AdzanContext";
 
@@ -81,6 +82,7 @@ export default function RootLayout({
             {children}
             <SignatureFooter />
             <Navigation />
+            <SaweriaButton />
             <InspectorBlocker />
           </AdzanProvider>
         </ThemeProvider>
