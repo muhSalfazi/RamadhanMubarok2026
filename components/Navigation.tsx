@@ -46,9 +46,9 @@ export default function Navigation() {
                 {links.map((link) => {
                     let isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
 
-                    // Special case for Ibadah to include /doa and /kiblat
+                    // Special case for Ibadah to include /doa and /zakat
                     if (link.href === "/ibadah") {
-                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/kiblat");
+                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/zakat");
                     }
 
                     return (

@@ -44,17 +44,17 @@ const menuItems = [
         border: "border-amber-500/20"
     },
     {
-        title: "Arah Kiblat",
-        description: "Cari arah kiblat akurat sesuai lokasi.",
+        title: "Kalkulator Zakat",
+        description: "Hitung zakat fitrah & maal sesuai nishab.",
         icon: (
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
         ),
-        href: "/kiblat",
-        color: "text-rose-400",
-        bg: "bg-rose-500/10",
-        border: "border-rose-500/20"
+        href: "/zakat",
+        color: "text-amber-400",
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/20"
     }
 ];
 
