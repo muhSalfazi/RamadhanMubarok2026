@@ -53,6 +53,7 @@ export const viewport = {
 
 import Navigation from "../components/Navigation";
 import SignatureFooter from "../components/SignatureFooter";
+import SaweriaButton from "../components/SaweriaButton";
 
 export default function RootLayout({
   children,
@@ -78,6 +79,7 @@ export default function RootLayout({
           {children}
           <SignatureFooter />
           <Navigation />
+          <SaweriaButton />
         </ThemeProvider>
       </body>
     </html>
