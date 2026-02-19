@@ -77,7 +77,7 @@ export default function SurahDetail({ surah, ayahs }: Props) {
     }, [searchParams]);
 
     return (
-        <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30 pb-32">
+        <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30 pb-48">
             <div className="fixed inset-0 z-0">
                 <div className="absolute inset-0 ramadhan-bg" />
                 <div className="absolute inset-0 islamic-pattern mix-blend-overlay opacity-30" />
@@ -112,11 +112,31 @@ export default function SurahDetail({ surah, ayahs }: Props) {
                 <div className="space-y-6">
                     {ayahs.map((ayat, index) => {
                         const isPlaying = currentAyatIndex === index;
+                        const isFocusMode = currentAyatIndex !== null;
+
+                        // Focus Mode Logic:
+                        // If something is playing...
+                        // - Active card: Normal opacity, scaled up slightly
+                        // - Inactive cards: Dimmed (opacity-30), blurred slightly
+                        // If nothing playing: Normal opacity for all
+                        let containerClasses = "glass p-6 md:p-8 rounded-2xl transition-all duration-700 ease-in-out ";
+
+                        if (isFocusMode) {
+                            if (isPlaying) {
+                                containerClasses += "border-emerald-500/50 bg-emerald-900/20 shadow-[0_0_50px_rgba(16,185,129,0.15)] scale-[1.02] opacity-100 z-10";
+                            } else {
+                                containerClasses += "border-white/5 bg-white/5 opacity-30 scale-95 blur-[1px] grayscale-[0.5]";
+                            }
+                        } else {
+                            containerClasses += "hover:bg-white/5 opacity-100";
+                        }
+
                         return (
                             <div
                                 key={ayat.number.inSurah}
                                 id={`ayat-${index}`}
-                                className={`glass p-6 md:p-8 rounded-2xl transition-all duration-500 ${isPlaying ? 'border-emerald-500/50 bg-emerald-900/10 shadow-[0_0_30px_rgba(16,185,129,0.1)] scale-[1.01]' : 'hover:bg-white/5'}`}
+                                className={containerClasses}
+                                onClick={() => handlePlayAyat(index)}
                             >
                                 <div className="flex justify-between items-start mb-6 gap-4">
                                     <div className="flex flex-col gap-2">
@@ -124,7 +144,10 @@ export default function SurahDetail({ surah, ayahs }: Props) {
                                             {ayat.number.inSurah}
                                         </span>
                                         <button
-                                            onClick={() => handlePlayAyat(index)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handlePlayAyat(index);
+                                            }}
                                             className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isPlaying ? 'bg-white text-emerald-600' : 'bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'}`}
                                         >
                                             {isPlaying ? (
