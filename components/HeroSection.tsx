@@ -24,7 +24,7 @@ export default function HeroSection({
             <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-6 glass-gold anim-fade-up delay-1">
                 <span className="text-sm" aria-hidden="true">✦</span>
                 <span className="text-sm font-medium text-gold-gradient tracking-wide">
-                    Selamat Menjalankan Ibadah Puasa Ramadhan Mubarok 2026
+                    Selamat Menjalankan Ibadah Puasa Ramadhan Mubarok 1447 H
                 </span>
                 <span className="text-sm" aria-hidden="true">✦</span>
             </div>

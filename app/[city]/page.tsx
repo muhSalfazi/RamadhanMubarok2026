@@ -17,18 +17,9 @@ import CityLoading from "./loading";
 export const dynamic = 'force-dynamic'; // Optional: if we want to ensure fresh data
 
 async function MonthlyScheduleWrapper({ lat, lng }: { lat: number, lng: number }) {
-    // Hardcoded to Feb 2026 for Ramadhan context
     const monthlyData = await fetchMonthlyPrayerTimesByCoords(lat, lng, 2, 2026);
-    // Also fetch March (next month) to show full Ramadhan if it spans across months? 
-    // Ramadhan 2026 starts 19 Feb. So it's ~10 days in Feb and ~20 days in March.
-    // For "1 bulan penuh", ideally we merge them.
-    // Let's do a quick merge for better UX.
     const marchData = await fetchMonthlyPrayerTimesByCoords(lat, lng, 3, 2026);
 
-    // Combine: filter Feb days from 19th onwards? Or just show Feb and March?
-    // Let's show Feb (from 19th) + March.
-    // User asked "1 bulan penuh ramadhan". 
-    // AladhanData.date.hijri.month.number === 9 (Ramadhan)
 
     const allData = [...monthlyData, ...marchData];
     const ramadhanData = allData.filter(d => d.date.hijri.month.number === 9);

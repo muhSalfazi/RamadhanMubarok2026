@@ -3,7 +3,6 @@
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Animation**: CSS Animations & Transitions
-- **Deployment**: [Vercel](https://vercel.com/)
 - **Data Source**: 
     - [Aladhan API](https://aladhan.com/prayer-times-api) (Jadwal Sholat & Imsakiyah)
     - [Equran.id API](https://equran.id/apidev) (Jadwal Sholat Indonesia & Doa Harian)
@@ -12,7 +11,7 @@
 
 ## Fitur Utama 
 
-- **Jadwal Sholat & Imsakiyah**: Akurat sesuai lokasi (Default: Karawang), menggunakan API Aladhan (Kemenag RI - Syafi'i)
+- **Jadwal Sholat & Imsakiyah**: Akurat sesuai lokasi terkini, menggunakan API Aladhan (Kemenag RI - Syafi'i)
 - **Al-Qur'an Digital**: Baca Al-Qur'an per surat dengan tampilan nyaman.
 - **Murotal Audio Player**: Dengarkan lantunan ayat suci dari Mishary Rashid Alafasy (sumber: EveryAyah).
 - **Auto Focus Ayat**: Layar otomatis bergulir mengikuti ayat yang sedang diputar.

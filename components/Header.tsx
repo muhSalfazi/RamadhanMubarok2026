@@ -21,7 +21,7 @@ export default function Header({ citySlug }: HeaderProps) {
                 </div>
                 <div>
                     <h1 className="text-xl font-bold text-emerald-400 tracking-tight leading-none">
-                        Ramadhan <span className="text-white">2026</span>
+                        Ramadhan <span className="text-white">1447 H</span>
                     </h1>
                     <p className="text-sm text-white/40 mt-0.5 font-medium tracking-wide">
                         Digital Experience

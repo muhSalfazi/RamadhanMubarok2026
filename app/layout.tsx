@@ -55,6 +55,7 @@ import Navigation from "../components/Navigation";
 import SignatureFooter from "../components/SignatureFooter";
 import SaweriaButton from "../components/SaweriaButton";
 import InspectorBlocker from "../components/InspectorBlocker";
+import { AdzanProvider } from "../components/AdzanContext";
 
 export default function RootLayout({
   children,
@@ -77,11 +78,13 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} antialiased overflow-x-hidden bg-[#030b18]`}>
         <ThemeProvider>
-          {children}
-          <SignatureFooter />
-          <Navigation />
-          <SaweriaButton />
-          <InspectorBlocker />
+          <AdzanProvider>
+            {children}
+            <SignatureFooter />
+            <Navigation />
+            <SaweriaButton />
+            <InspectorBlocker />
+          </AdzanProvider>
         </ThemeProvider>
       </body>
     </html>
