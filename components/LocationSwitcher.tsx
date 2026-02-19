@@ -25,6 +25,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
     function handleSelect(city: City) {
         setOpen(false);
         setSearch("");
+        localStorage.setItem("preferred_city", city.slug);
         router.push(`/${city.slug}`);
     }
 
@@ -52,6 +53,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
                 });
 
                 if (match) {
+                    localStorage.setItem("preferred_city", match.slug);
                     router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                     return;
                 }
@@ -62,6 +64,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
             // Jika ada displayName dari reverse geocode tapi tidak match database, tetap pakai displayName tersebut
             // tapi base city-nya pakai yang nearest untuk jadwal sholat
             const customName = locationResult?.displayName || nearest.name;
+            localStorage.setItem("preferred_city", nearest.slug);
             router.push(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
 
         } catch (err: any) {
