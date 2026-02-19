@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function SaweriaButton() {
     return (
         <a
-            href="https://saweria.co/muhSalfazi" // Username sesuai di screenshot
+            href="https://saweria.co/muhSalfazi" 
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-24 md:bottom-6 left-6 z-50 group flex items-center justify-center p-3 rounded-full bg-[#faae2b] hover:bg-[#ffb93d] shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 border-2 border-[#5c3c0d]/10"

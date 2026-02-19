@@ -5,7 +5,7 @@ import VisitorCounter from "./VisitorCounter";
 
 export default function SignatureFooter() {
     return (
-        <footer className="relative w-full z-10 bg-[#020617] border-t border-white/5 py-12 overflow-hidden mt-20">
+        <footer className="relative w-full z-10 bg-[#020617] border-t border-white/5 pt-12 pb-32 md:py-12 overflow-hidden mt-20">
             {/* Background decorations */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#020617] to-transparent pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-50" />

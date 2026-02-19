@@ -163,10 +163,19 @@ export default function CityPage({ params, searchParams }: PageProps) {
                 </Suspense>
 
                 <footer className="mt-12 text-center anim-fade opacity-40 hover:opacity-100 transition-opacity">
-                    <p className="font-arabic text-xl mb-2">وَالنَّحْوُ أَوْلَى أَوَّلًا أَنْ يُعْلَمَا ~ إِذِ الْكَلَامُ دُونَهُ لَنْ يُفْهَمَا</p>
-                    <p className="text-xs text-white/50 mb-4">Imrthi -Syekh Syarafuddin Yahya al imrithi</p>
                     <p className="text-[10px] text-white/30 uppercase tracking-widest">
                         Sumber Data: Aladhan.com (Kemenag RI - Syafi'i)
+                    </p>
+                    <p className="font-arabic text-xl mb-2 leading-relaxed">
+                        يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِنْ قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ
+                    </p>
+
+                    <p className="text-xs text-white/50 mb-1">
+                        QS. Al-Baqarah: 183
+                    </p>
+
+                    <p className="text-xs text-white/60 mb-4 italic">
+                        “Wahai orang-orang yang beriman! Diwajibkan atas kamu berpuasa sebagaimana diwajibkan atas orang-orang sebelum kamu agar kamu bertakwa.”
                     </p>
                 </footer>
             </div>
