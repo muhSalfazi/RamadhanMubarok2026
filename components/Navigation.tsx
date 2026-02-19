@@ -22,7 +22,7 @@ export default function Navigation() {
             )
         },
         {
-            href: "/doa", label: "Ibadah", icon: (
+            href: "/ibadah", label: "Ibadah", icon: (
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
@@ -44,7 +44,13 @@ export default function Navigation() {
             {/* Mobile Bottom Nav */}
             <div className="md:hidden glass backdrop-blur-xl border-t border-white/10 px-6 py-3 flex justify-between items-center bg-[#020617]/80">
                 {links.map((link) => {
-                    const isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
+                    let isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
+
+                    // Special case for Ibadah to include /doa and /kiblat
+                    if (link.href === "/ibadah") {
+                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/kiblat");
+                    }
+
                     return (
                         <Link
                             key={link.href}
@@ -63,7 +69,12 @@ export default function Navigation() {
             {/* Currently Header.tsx handles top area, we can keep this for mobile only or create a floating dock for desktop later if needed */}
             <div className="hidden md:flex fixed right-8 top-8 z-50 flex-col gap-4">
                 {links.map((link) => {
-                    const isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
+                    let isActive = pathname.startsWith(link.href) && (link.href !== "/karawang" || pathname === "/karawang" || pathname === "/");
+
+                    if (link.href === "/ibadah") {
+                        isActive = pathname.startsWith("/ibadah") || pathname.startsWith("/doa") || pathname.startsWith("/kiblat");
+                    }
+
                     return (
                         <Link
                             key={link.href}

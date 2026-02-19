@@ -35,13 +35,13 @@ export default function DoaPageContent({ initialDoas }: { initialDoas: Doa[] }) 
     return (
         <div className="min-h-screen bg-neutral-950 relative selection:bg-emerald-500/30">
             {/* Background elements would be here (reusing from layout/home if global) */}
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-40">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-80">
                 <header className="mb-8">
-                    <Link href="/" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-4">
+                    <Link href="/ibadah" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-4">
                         <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        Kembali
+                        Kembali ke Menu
                     </Link>
                     <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Kumpulan Doa Harian</h1>
                     <p className="text-white/60">Sumber: Equran.id</p>
