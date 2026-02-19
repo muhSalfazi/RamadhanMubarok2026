@@ -113,26 +113,37 @@ export default function QuranBrowser({ surahs }: QuranBrowserProps) {
                                         <p className="px-2 text-xs font-medium text-emerald-400 uppercase tracking-wider mb-1">
                                             Daftar Surat di Juz {juz.id}
                                         </p>
-                                        {getSurahsInJuz(juz.id).map(surah => (
-                                            <Link
-                                                key={surah.number}
-                                                href={`/quran/${surah.number}`}
-                                                className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 group transition-colors"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <span className="text-white/20 text-sm font-mono w-6">{surah.number}.</span>
-                                                    <div>
-                                                        <p className="text-white text-sm font-medium group-hover:text-emerald-300 transition-colors">
-                                                            {surah.name.transliteration.id}
-                                                        </p>
-                                                        <p className="text-white/30 text-[10px]">
-                                                            {surah.name.translation.id} • {surah.numberOfVerses} Ayat
-                                                        </p>
+                                        {getSurahsInJuz(juz.id).map(surah => {
+                                            // Determine starting ayat for this Juz
+                                            // If this Surah is the one where the Juz starts, use juz.start.ayat
+                                            // Otherwise start from 1
+                                            const isStartSurah = surah.number === juz.start.surah;
+                                            const startAyat = isStartSurah ? juz.start.ayat : 1;
+
+                                            return (
+                                                <Link
+                                                    key={surah.number}
+                                                    href={`/quran/${surah.number}?ayat=${startAyat}`}
+                                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 group transition-colors"
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-white/20 text-sm font-mono w-6">{surah.number}.</span>
+                                                        <div>
+                                                            <p className="text-white text-sm font-medium group-hover:text-emerald-300 transition-colors">
+                                                                {surah.name.transliteration.id}
+                                                            </p>
+                                                            <p className="text-white/30 text-[10px]">
+                                                                {surah.name.translation.id} • {surah.numberOfVerses} Ayat
+                                                                {isStartSurah && startAyat > 1 && (
+                                                                    <span className="text-emerald-400 ml-1">(Mulai Ayat {startAyat})</span>
+                                                                )}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <span className="font-arabic text-lg text-white/50">{surah.name.short}</span>
-                                            </Link>
-                                        ))}
+                                                    <span className="font-arabic text-lg text-white/50">{surah.name.short}</span>
+                                                </Link>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>

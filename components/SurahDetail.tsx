@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Surah, Ayat } from "../lib/quranApi";
 import StarParticles from "../components/StarParticles";
 import MurotalPlayer from "../components/MurotalPlayer";
@@ -13,6 +14,7 @@ interface Props {
 
 export default function SurahDetail({ surah, ayahs }: Props) {
     const [currentAyatIndex, setCurrentAyatIndex] = useState<number | null>(null);
+    const searchParams = useSearchParams();
 
     const handlePlayAyat = (index: number) => {
         setCurrentAyatIndex(index);
@@ -32,7 +34,7 @@ export default function SurahDetail({ surah, ayahs }: Props) {
         }
     };
 
-    // Auto-scroll effect
+    // Auto-scroll effect for Playback
     useEffect(() => {
         if (currentAyatIndex !== null) {
             const element = document.getElementById(`ayat-${currentAyatIndex}`);
@@ -44,6 +46,35 @@ export default function SurahDetail({ surah, ayahs }: Props) {
             }
         }
     }, [currentAyatIndex]);
+
+    // Initial scroll from URL query param (e.g. ?ayat=142)
+    useEffect(() => {
+        const ayatParam = searchParams.get('ayat');
+        if (ayatParam) {
+            const verseNumber = parseInt(ayatParam);
+            // Verify if valid number
+            if (!isNaN(verseNumber) && verseNumber > 0) {
+                const index = verseNumber - 1; // 0-based index
+
+                // Small delay to ensure render
+                setTimeout(() => {
+                    const element = document.getElementById(`ayat-${index}`);
+                    if (element) {
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+
+                        // Visual cue
+                        element.classList.add('ring-2', 'ring-emerald-500', 'bg-emerald-500/10');
+                        setTimeout(() => {
+                            element.classList.remove('ring-2', 'ring-emerald-500', 'bg-emerald-500/10');
+                        }, 2000);
+                    }
+                }, 100);
+            }
+        }
+    }, [searchParams]);
 
     return (
         <main className="min-h-screen relative overflow-hidden selection:bg-emerald-500/30 pb-32">
@@ -104,7 +135,7 @@ export default function SurahDetail({ surah, ayahs }: Props) {
                                         </button>
                                     </div>
 
-                                    <p className="font-arabic text-3xl md:text-4xl leading-[2.2] text-white text-right flex-1" dir="rtl">
+                                    <p className="font-arabic text-[32px] md:text-[48px] leading-[2.3] md:leading-[2.5] text-white text-right block w-full py-2 mb-4" dir="rtl">
                                         {ayat.text.arab}
                                     </p>
                                 </div>

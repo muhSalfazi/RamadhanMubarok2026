@@ -13,9 +13,10 @@ export default function VisitorCounter() {
         }
 
         const fetchVisits = () => {
-            fetch("https://api.counterapi.dev/v1/ramadhan-tracker-v2/visits/up")
+            // Use internal API route to bypass ad-blockers
+            fetch("/api/visits")
                 .then((res) => {
-                    if (!res.ok) throw new Error("Network response was not ok");
+                    if (!res.ok) throw new Error("Internal API Error");
                     return res.json();
                 })
                 .then((data) => {
@@ -26,8 +27,8 @@ export default function VisitorCounter() {
                 })
                 .catch((err) => {
                     console.error("Failed to fetch visits:", err);
-                    // If failed and we have no local data, maybe try a read-only endpoint?
-                    // But 'up' is effectively read+write.
+                    // On error, if we have 0 (initial), try to set to 1 as fallback so it doesn't show "..." forever
+                    setVisits(prev => prev === 0 ? 1 : prev);
                 });
         };
 
