@@ -32,6 +32,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
         localStorage.removeItem("preferred_name");
         localStorage.removeItem("preferred_lat");
         localStorage.removeItem("preferred_lng");
+        localStorage.removeItem("loc_ver");
 
         router.push(`/${city.slug}`);
     }
@@ -62,6 +63,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
                     localStorage.setItem("preferred_name", displayName);
                     localStorage.setItem("preferred_lat", latitude.toString());
                     localStorage.setItem("preferred_lng", longitude.toString());
+                    localStorage.setItem("loc_ver", "2");
                     router.push(`/${match.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(displayName)}`);
                     return;
                 }
@@ -73,6 +75,7 @@ export default function LocationSwitcher({ currentSlug }: LocationSwitcherProps)
             localStorage.setItem("preferred_name", customName);
             localStorage.setItem("preferred_lat", latitude.toString());
             localStorage.setItem("preferred_lng", longitude.toString());
+            localStorage.setItem("loc_ver", "2");
             router.push(`/${nearest.slug}?lat=${latitude}&lng=${longitude}&name=${encodeURIComponent(customName)}`);
 
         } catch (err: any) {
